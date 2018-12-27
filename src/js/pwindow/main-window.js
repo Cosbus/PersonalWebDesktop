@@ -1,5 +1,5 @@
-
 import Pwindow from './p-window.js'
+import SubWindow from './sub-window.js'
 
 class MainWindow extends Pwindow {
   constructor () {
@@ -9,12 +9,61 @@ class MainWindow extends Pwindow {
     this._windows = []
     this._highestZindex = 0
     this._activeWindow = this
+    this._firstWindowStartingTopPos = 20
+    this._firstWindowStartingLeftPos = 20
+    this._nextWindowTopOffset = 20
+    this._nextWindowLeftOffset = 20
 
+    // Variables for the application buttons
+    this._applications = []
+    this._buttonWidth = 40
+    this._buttonHeight = 40
+    this._buttonSpacer = 5
+
+    // Remove elements which should not be there for main window
+    this.shadowRoot.querySelector('#closeWindowButton').remove()
+    this.shadowRoot.querySelector('#containerHeader').remove()
+
+    // Remove and add classes
     this._container.classList.remove('defaultSetting')
     this._container.classList.add('mainWindow')
+
+    // Add Apps
+    this._AppContainer = this.shadowRoot.querySelector('#expandBubble')
+    this._AppContIdleHeight = '30px'
+    this._AppContIdleWidth = '30px'
   }
 
   connectedCallback () {
+    this._container.addEventListener('click', e => {
+      for (let application of this._applications) {
+        if (e.target === application) {
+          this.addSubWindow(new SubWindow())
+        }
+      }
+    })
+
+    this._AppContainer.addEventListener('mouseover', e => {
+      // Make sure element moves to front
+      this._highestZindex++
+      this._AppContainer.style.zIndex = this._highestZindex
+      this._applications.forEach((element) => {
+        element.style.visibility = 'visible'
+      })
+
+      // And change size of bubble
+      this._AppContainer.style.width = `${this._applications.length * (this._buttonWidth + this._buttonSpacer) +
+      2 * this._buttonSpacer}px`
+      this._AppContainer.style.height = `${this._buttonHeight + 2 * this._buttonSpacer}px`
+    })
+    this._AppContainer.addEventListener('mouseout', e => {
+      this._applications.forEach((element) => {
+        element.style.visibility = 'hidden'
+      })
+      this._AppContainer.style.width = this._AppContIdleWidth
+      this._AppContainer.style.height = this._AppContIdleHeight
+    })
+
     this._container.addEventListener('mousedown', e => {
       // Make window appear in front
       this._highestZindex += 1
@@ -25,8 +74,6 @@ class MainWindow extends Pwindow {
           this._dragStart(this._activeWindow, e)
         }
       }
-
-      // Handle drag
     }, false)
 
     this._container.addEventListener('mousemove', e => {
@@ -78,14 +125,28 @@ class MainWindow extends Pwindow {
      window.getCurrentPointerPosY() + 'px, 0)')
   }
 
+  addApplication (application) {
+    if (this._applications.length > 0) {
+      console.log('inne i ifsatsen')
+      application.setLeftPosition(`${parseInt(this._applications[this._applications.length - 1].getLeftPosition(), 10) +
+      this._buttonWidth + this._buttonSpacer}`)
+    } else {
+      application.setLeftPosition(5)
+    }
+    this._applications.push(application)
+    this._AppContainer.appendChild(application)
+  }
+
   addSubWindow (window) {
-    if (this._highestZindex === 0) {
-      window.setLeftPosition(20)
-      window.setTopPosition(20)
+    if (this._windows.length === 0) {
+      window.setLeftPosition(this._firstWindowStartingLeftPos)
+      window.setTopPosition(this._firstWindowStartingTopPos)
     } else {
       // Dont stack windows right on top of each other
-      window.setLeftPosition(`${parseInt(this._windows[this._windows.length - 1].getLeftPosition(), 10) + 10}`)
-      window.setTopPosition(`${parseInt(this._windows[this._windows.length - 1].getTopPosition(), 10) + 10}`)
+      window.setLeftPosition(`${parseInt(this._windows[this._windows.length - 1].getLeftPosition(), 10) +
+         this._nextWindowLeftOffset}`)
+      window.setTopPosition(`${parseInt(this._windows[this._windows.length - 1].getTopPosition(), 10) +
+        this._nextWindowTopOffset}`)
     }
     this._highestZindex += 1
     window.setZIndex(this._highestZindex)

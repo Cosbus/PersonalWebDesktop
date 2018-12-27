@@ -6,7 +6,8 @@ htmlTemplate.innerHTML = /* html */ `
     <button id="closeWindowButton" class="closeWindowClass">
   </div>
   <div id="workSpace">
-    <h1>Hej</h1>
+    <div id="expandBubble" class="expandBubbleClass">
+    </div>
   </div>
  </div>
 `
