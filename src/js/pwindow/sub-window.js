@@ -2,13 +2,20 @@
 import Pwindow from './p-window.js'
 
 class SubWindow extends Pwindow {
-  constructor () {
+  constructor (windowContent, size) {
     super()
 
     // Remove unused elements
     this.shadowRoot.querySelector('#expandBubble').remove()
 
     this._container.classList.add('subWindow')
+
+    this._content = windowContent
+    this._windowSize = size
+    this._workSpace = this._container.querySelector('#workSpace')
+    console.log(this._container)
+    console.log(this._workSpace)
+    this._workSpace.appendChild(this._content)
   }
 
   connectedCallback () {

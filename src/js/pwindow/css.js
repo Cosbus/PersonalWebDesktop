@@ -25,11 +25,20 @@ cssTemplate.innerHTML = /* html */ `
     left: 0;
     bottom: 0;
     right: 0;
-    overflow: auto;
+    overflow: hidden;
   }
 
-  .subWindow {
+  #workSpace {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    height: 95%;
+    width: 100%;
+  }
 
+  .subWindow {;
   }
 
   .subWindow:active {
@@ -42,7 +51,7 @@ cssTemplate.innerHTML = /* html */ `
 
 
   .defaultSetting {
-    border: red;
+    
     border-style: solid;
     background: blue;
     position: absolute;
@@ -55,9 +64,12 @@ cssTemplate.innerHTML = /* html */ `
   .headerClass {
     position: absolute;
     top: 0;
-    height: 10%;
+    height: 5%;
     width: 100%;
     background: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .headerClass:hover {
@@ -67,10 +79,8 @@ cssTemplate.innerHTML = /* html */ `
 
   .closeWindowClass {
     position:absolute;
-    right:0;
-    top:10%;
-    width: 5%;
-    height: 80%;
+    right: 2px;
+    height: 90%;
     background: green;
   }
 
@@ -87,6 +97,7 @@ cssTemplate.innerHTML = /* html */ `
     height: 30px;
     background: aqua;
     border: 1px solid blue;
+    
   }
 
   

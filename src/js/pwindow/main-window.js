@@ -13,6 +13,7 @@ class MainWindow extends Pwindow {
     this._firstWindowStartingLeftPos = 20
     this._nextWindowTopOffset = 20
     this._nextWindowLeftOffset = 20
+    this._subWindowSizeAdjustment = 1.1 // 10% header
 
     // Variables for the application buttons
     this._applications = []
@@ -38,7 +39,9 @@ class MainWindow extends Pwindow {
     this._container.addEventListener('click', e => {
       for (let application of this._applications) {
         if (e.target === application) {
-          this.addSubWindow(new SubWindow())
+          this.addSubWindow(new SubWindow(application.getNewApplication()),
+            application.getApplication(application.getNoOfApplicationInstances() - 1).getWidthRequired() * this._subWindowSizeAdjustment,
+            application.getApplication(application.getNoOfApplicationInstances() - 1).getHeightRequired() * this._subWindowSizeAdjustment)
         }
       }
     })
@@ -137,7 +140,7 @@ class MainWindow extends Pwindow {
     this._AppContainer.appendChild(application)
   }
 
-  addSubWindow (window) {
+  addSubWindow (window, width, height) {
     if (this._windows.length === 0) {
       window.setLeftPosition(this._firstWindowStartingLeftPos)
       window.setTopPosition(this._firstWindowStartingTopPos)
@@ -150,6 +153,10 @@ class MainWindow extends Pwindow {
     }
     this._highestZindex += 1
     window.setZIndex(this._highestZindex)
+    console.log(width)
+    console.log(height)
+    window.setWidth(`${width}px`)
+    window.setHeight(`${height}px`)
 
     this._windows.push(window)
 

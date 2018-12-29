@@ -2,7 +2,7 @@ import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
 
 class AppContainer extends window.HTMLElement {
-  constructor () {
+  constructor (Application, appicon, ...args) {
     super()
     this.attachShadow({ mode: 'open' })
 
@@ -10,10 +10,35 @@ class AppContainer extends window.HTMLElement {
     this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
 
     this._appButton = this.shadowRoot.querySelector('button')
+    this._Application = Application
+    this._applicationInstances = []
+    this._icon = appicon
   }
 
   connectedCallback () {
     this.style.visibility = 'hidden'
+  }
+
+  getIcon () {
+    return this._icon
+  }
+
+  getApplication (index) {
+    if (index < this._applicationInstances.length) {
+      return this._applicationInstances[index]
+    } else {
+      return 'No application for that index'
+    }
+  }
+
+  getNewApplication (...args) {
+    let application = new this._Application()
+    this._applicationInstances.push(application)
+    return application
+  }
+
+  getNoOfApplicationInstances () {
+    return this._applicationInstances.length
   }
 
   getTopPosition () {

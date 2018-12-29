@@ -107,6 +107,22 @@ class Pwindow extends window.HTMLElement {
     return this._container.getAttribute('z-index')
   }
 
+  setWidth (width) {
+    this._container.style.width = width
+  }
+
+  getWidth () {
+    return this._container.style.width
+  }
+
+  setHeight (height) {
+    this._container.style.height = height
+  }
+
+  getHeight () {
+    return this._container.style.height
+  }
+
   getLeftPosition () {
     return this._container.style.left
   }
