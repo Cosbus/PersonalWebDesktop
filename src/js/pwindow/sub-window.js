@@ -13,8 +13,6 @@ class SubWindow extends Pwindow {
     this._content = windowContent
     this._windowSize = size
     this._workSpace = this._container.querySelector('#workSpace')
-    console.log(this._container)
-    console.log(this._workSpace)
     this._workSpace.appendChild(this._content)
   }
 

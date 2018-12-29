@@ -13,7 +13,7 @@ class MainWindow extends Pwindow {
     this._firstWindowStartingLeftPos = 20
     this._nextWindowTopOffset = 20
     this._nextWindowLeftOffset = 20
-    this._subWindowSizeAdjustment = 1.1 // 10% header
+    this._subWindowSizeAdjustment = 1.2 // for header
 
     // Variables for the application buttons
     this._applications = []
@@ -28,6 +28,7 @@ class MainWindow extends Pwindow {
     // Remove and add classes
     this._container.classList.remove('defaultSetting')
     this._container.classList.add('mainWindow')
+    this._workSpace.style.height = '100%'
 
     // Add Apps
     this._AppContainer = this.shadowRoot.querySelector('#expandBubble')
@@ -40,7 +41,7 @@ class MainWindow extends Pwindow {
       for (let application of this._applications) {
         if (e.target === application) {
           this.addSubWindow(new SubWindow(application.getNewApplication()),
-            application.getApplication(application.getNoOfApplicationInstances() - 1).getWidthRequired() * this._subWindowSizeAdjustment,
+            application.getApplication(application.getNoOfApplicationInstances() - 1).getWidthRequired(),
             application.getApplication(application.getNoOfApplicationInstances() - 1).getHeightRequired() * this._subWindowSizeAdjustment)
         }
       }
@@ -140,27 +141,45 @@ class MainWindow extends Pwindow {
     this._AppContainer.appendChild(application)
   }
 
-  addSubWindow (window, width, height) {
+  addSubWindow (subWindow, width, height) {
     if (this._windows.length === 0) {
-      window.setLeftPosition(this._firstWindowStartingLeftPos)
-      window.setTopPosition(this._firstWindowStartingTopPos)
+      subWindow.setLeftPosition(this._firstWindowStartingLeftPos)
+      subWindow.setTopPosition(this._firstWindowStartingTopPos)
     } else {
+      let lastWindow = this._windows[this._windows.length - 1]
       // Dont stack windows right on top of each other
-      window.setLeftPosition(`${parseInt(this._windows[this._windows.length - 1].getLeftPosition(), 10) +
+      subWindow.setLeftPosition(`${parseInt(lastWindow.getLeftPosition(), 10) +
          this._nextWindowLeftOffset}`)
-      window.setTopPosition(`${parseInt(this._windows[this._windows.length - 1].getTopPosition(), 10) +
+      subWindow.setTopPosition(`${parseInt(lastWindow.getTopPosition(), 10) +
         this._nextWindowTopOffset}`)
     }
     this._highestZindex += 1
-    window.setZIndex(this._highestZindex)
-    console.log(width)
-    console.log(height)
-    window.setWidth(`${width}px`)
-    window.setHeight(`${height}px`)
+    subWindow.setZIndex(this._highestZindex)
+    subWindow.setWidth(`${width}px`)
+    subWindow.setHeight(`${height}px`)
 
-    this._windows.push(window)
+    if (!this._isInViewport(subWindow)) { // If the new window falls out of viewport
+      this._firstWindowStartingLeftPos += 10
+      subWindow.setLeftPosition(this._firstWindowStartingLeftPos)
+      subWindow.setTopPosition(this._firstWindowStartingTopPos)
+    }
 
-    this._workSpace.appendChild(window)
+    this._windows.push(subWindow)
+
+    this._workSpace.appendChild(subWindow)
+  }
+
+  _isInViewport (elem) {
+    console.log('topPosition:', elem.getTopPosition())
+    console.log(elem.getHeight())
+    console.log('leftPosition:', elem.getLeftPosition() + elem.getWidth())
+    console.log('innerheight:', window.innerHeight)
+    console.log('innerwidth:', window.innerWidth)
+
+    return ((parseInt(elem.getTopPosition(), 10) >= 0) &&
+    (parseInt(elem.getLeftPosition(), 10) >= 0) &&
+    ((parseInt(elem.getTopPosition(), 10) + parseInt(elem.getHeight(), 10)) <= window.innerHeight) &&
+    ((parseInt(elem.getLeftPosition(), 10) + parseInt(elem.getWidth(), 10)) <= window.innerWidth))
   }
 }
 

@@ -34,9 +34,10 @@ cssTemplate.innerHTML = /* html */ `
     justify-content: center;
     position: absolute;
     bottom: 0;
-    height: 95%;
+    height: 90%;
     width: 100%;
   }
+
 
   .subWindow {;
   }
@@ -64,7 +65,7 @@ cssTemplate.innerHTML = /* html */ `
   .headerClass {
     position: absolute;
     top: 0;
-    height: 5%;
+    height: 10%;
     width: 100%;
     background: red;
     display: flex;

@@ -138,6 +138,26 @@ class Pwindow extends window.HTMLElement {
   setTopPosition (topPos) {
     this._container.style.top = topPos + 'px'
   }
+
+  getRightPosition () {
+    return this._container.style.right
+  }
+
+  setRightPosition (rightPos) {
+    this._container.style.right = rightPos + 'px'
+  }
+
+  getBottomPosition () {
+    return this._container.style.bottom
+  }
+
+  setBottomPosition (bottomPos) {
+    this._container.style.bottom = bottomPos + 'px'
+  }
+
+  getBoundingRect () {
+    return this._container.getBoundingClientRect()
+  }
 }
 
 export default Pwindow
