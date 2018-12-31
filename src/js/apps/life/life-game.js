@@ -85,6 +85,9 @@ class LifeGame extends window.HTMLElement {
       case 'Circle':
         this._drawCircle()
         break
+      case 'Triangle':
+        this._drawTriangle()
+        break
       default:
         break
     }
@@ -98,6 +101,14 @@ class LifeGame extends window.HTMLElement {
 
   _drawCircle () {
     this._ctx.arc(100, 100, 50, 0, 2 * Math.PI)
+    this._ctx.closePath()
+    this._ctx.stroke()
+  }
+
+  _drawTriangle () {
+    this._ctx.moveTo(100, 100)
+    this._ctx.lineTo(100, 300)
+    this._ctx.lineTo(300, 300)
     this._ctx.closePath()
     this._ctx.stroke()
   }

@@ -17,6 +17,7 @@ htmlTemplate.innerHTML = /* html */ `
     Shape <select id="selShape">
       <option value="Rectangle">Rectangle</option>    
       <option value="Circle"> Circle </option>
+      <option value="Triangle"> Triangle </option>
     </select>
     <button id="shapeButton">Draw shape</button>
   </div>
