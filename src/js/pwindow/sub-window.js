@@ -18,7 +18,6 @@ class SubWindow extends Pwindow {
 
   connectedCallback () {
     this._container.addEventListener('click', e => {
-      console.log('clicked')
       // Closebutton clicked
       if (e.target === this.shadowRoot.querySelector('#closeWindowButton')) {
         e.target.parentNode.parentNode.remove()

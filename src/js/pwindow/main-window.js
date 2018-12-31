@@ -131,7 +131,6 @@ class MainWindow extends Pwindow {
 
   addApplication (application) {
     if (this._applications.length > 0) {
-      console.log('inne i ifsatsen')
       application.setLeftPosition(`${parseInt(this._applications[this._applications.length - 1].getLeftPosition(), 10) +
       this._buttonWidth + this._buttonSpacer}`)
     } else {
@@ -170,12 +169,6 @@ class MainWindow extends Pwindow {
   }
 
   _isInViewport (elem) {
-    console.log('topPosition:', elem.getTopPosition())
-    console.log(elem.getHeight())
-    console.log('leftPosition:', elem.getLeftPosition() + elem.getWidth())
-    console.log('innerheight:', window.innerHeight)
-    console.log('innerwidth:', window.innerWidth)
-
     return ((parseInt(elem.getTopPosition(), 10) >= 0) &&
     (parseInt(elem.getLeftPosition(), 10) >= 0) &&
     ((parseInt(elem.getTopPosition(), 10) + parseInt(elem.getHeight(), 10)) <= window.innerHeight) &&

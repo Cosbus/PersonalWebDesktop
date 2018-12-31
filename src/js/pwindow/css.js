@@ -39,10 +39,12 @@ cssTemplate.innerHTML = /* html */ `
   }
 
 
-  .subWindow {;
+  .subWindow {
+    background-color: rgba(168, 218, 220, 1.00);
   }
 
   .subWindow:active {
+    
     background-color: rgba(168, 218, 220, 1.00);
   }
 
@@ -54,7 +56,8 @@ cssTemplate.innerHTML = /* html */ `
   .defaultSetting {
     
     border-style: solid;
-    background: blue;
+    
+    background-color: rgba(168, 218, 220, 1.00);
     position: absolute;
     top: 25%;
     left: 25%;
