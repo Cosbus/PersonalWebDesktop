@@ -4,7 +4,7 @@ cssTemplate.innerHTML = /* html */ `
 <style>
   :host {
     height: 100%;
-    width:100%;
+    width: 100%;
     margin: 0; 
   }
 
@@ -14,12 +14,14 @@ cssTemplate.innerHTML = /* html */ `
 
   #mainDiv {
     position: absolute;
-    height: 100%;
+    height:100%;
     width:100%;
+    margin:0;
   }
 
   #canvas {
-    top:0;
+   border:solid 2px;
+   top: 0;
     position:absolute;
   }
 

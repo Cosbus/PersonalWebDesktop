@@ -1,10 +1,10 @@
 const htmlTemplate = document.createElement('template')
 htmlTemplate.innerHTML = /* html */ `
  <link type="text/css" rel="stylesheet" href="/css.js" />
- <div id ="mainDiv" width="450" height="430">
-  <canvas id="canvas" width="450" height="400">
+ <div id ="mainDiv" height="400px" width="400px">
+  <canvas id="canvas" height="350px" width="400px">
   </canvas>
-  <div id="configArea" width="450" height="30">
+  <div id="configArea" height="50px" width="400px">
     <button id="clearButton"> Clear </button>
     Line Width <select id="selWidth">
             <option value="1">1</option>
@@ -18,8 +18,15 @@ htmlTemplate.innerHTML = /* html */ `
       <option value="Rectangle">Rectangle</option>    
       <option value="Circle"> Circle </option>
       <option value="Triangle"> Triangle </option>
+      <option value="Random"> Random </option>
     </select>
     <button id="shapeButton">Draw shape</button>
+    <br>
+    <br>
+    <button id="stepButton"> Step forward</button>
+    <button id="runButton"> Run Life! </button>
+    <span id="lifeInfo">Number of iterations: 0</span>
+    <button id="stopButton"> Stop </button>
   </div>
  </div>
 `
