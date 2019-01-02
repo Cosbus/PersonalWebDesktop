@@ -13,6 +13,8 @@ class SubWindow extends Pwindow {
     this._content = windowContent
     this._windowSize = size
     this._workSpace = this._container.querySelector('#workSpace')
+
+    this._workSpace.classList.add('workSpaceSubWindow')
     this._workSpace.appendChild(this._content)
   }
 

@@ -12,6 +12,7 @@ class AppContainer extends window.HTMLElement {
     this._appButton = this.shadowRoot.querySelector('button')
     this._Application = Application
     this._applicationInstances = []
+    this._args = args
     this._icon = appicon
   }
 
@@ -31,8 +32,8 @@ class AppContainer extends window.HTMLElement {
     }
   }
 
-  getNewApplication (...args) {
-    let application = new this._Application()
+  getNewApplication () {
+    let application = new this._Application(...this._args)
     this._applicationInstances.push(application)
     return application
   }

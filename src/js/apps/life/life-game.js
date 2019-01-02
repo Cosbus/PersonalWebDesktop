@@ -35,11 +35,9 @@ class LifeGame extends window.HTMLElement {
     this._lifeInfo = this.shadowRoot.querySelector('#lifeInfo')
     this._updateTime = 100
 
-    this._height = 350
-    this._width = 400
-
-    this._requiredWidth = 400
-    this._requiredHeight = 400
+    this._height = 400
+    this._width = 450
+    this._configAreaSize = 77
   }
 
   connectedCallback () {
@@ -157,14 +155,19 @@ class LifeGame extends window.HTMLElement {
     this._ctx.stroke()
   }
 
+  _randomPattern () {
+    for (let j = 0; j < this._height; j++) {
+      for (let k = 0; k < this._width; k++) {
+        this._arr[j][k] = Math.round(Math.random())
+      }
+    }
+  }
+
   _drawPatternOnCanvas () {
     for (let j = 1; j < this._height; j++) {
       for (let k = 1; k < this._width; k++) {
         if (this._arr[j][k] === 1) {
           this._ctx.fillStyle = 'black'
-          this._ctx.fillRect(k, j, 1, 1)
-        } else if (this._arr[j][k] === 2) {
-          this._ctx.fillStyle = 'red'
           this._ctx.fillRect(k, j, 1, 1)
         }
       }
@@ -209,11 +212,11 @@ class LifeGame extends window.HTMLElement {
   }
 
   getWidthRequired () {
-    return this._requiredWidth
+    return this._width
   }
 
   getHeightRequired () {
-    return this._requiredHeight
+    return (this._height + this._configAreaSize)
   }
 
   _createArray (arr) {

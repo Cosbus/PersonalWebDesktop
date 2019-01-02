@@ -7,5 +7,9 @@ htmlTemplate.innerHTML = /* html */ `
     </div>
   </template>
 </div>
+<div id="infoArea">
+  <div id="timeArea">Time: 0 seconds </div>
+  <div id="triesArea">Number of tries: 0 </div>
+</div>
 `
 export default htmlTemplate

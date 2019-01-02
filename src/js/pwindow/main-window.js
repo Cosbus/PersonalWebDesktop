@@ -13,7 +13,7 @@ class MainWindow extends Pwindow {
     this._firstWindowStartingLeftPos = 20
     this._nextWindowTopOffset = 20
     this._nextWindowLeftOffset = 20
-    this._subWindowSizeAdjustment = 1.2 // for header
+    this._headerSize = 20
 
     // Variables for the application buttons
     this._applications = []
@@ -29,6 +29,7 @@ class MainWindow extends Pwindow {
     this._container.classList.remove('defaultSetting')
     this._container.classList.add('mainWindow')
     this._workSpace.style.height = '100%'
+    this._workSpace.classList.add('workSpaceMainWindow')
 
     // Add Apps
     this._AppContainer = this.shadowRoot.querySelector('#expandBubble')
@@ -42,7 +43,7 @@ class MainWindow extends Pwindow {
         if (e.target === application) {
           this.addSubWindow(new SubWindow(application.getNewApplication()),
             application.getApplication(application.getNoOfApplicationInstances() - 1).getWidthRequired(),
-            application.getApplication(application.getNoOfApplicationInstances() - 1).getHeightRequired() * this._subWindowSizeAdjustment)
+            application.getApplication(application.getNoOfApplicationInstances() - 1).getHeightRequired() + this._headerSize)
         }
       }
     })

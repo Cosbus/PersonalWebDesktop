@@ -28,16 +28,22 @@ cssTemplate.innerHTML = /* html */ `
     overflow: hidden;
   }
 
-  #workSpace {
+  .workSpaceMainWindow {
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
-    bottom: 0;
-    height: 90%;
     width: 100%;
   }
-
+  
+  .workSpaceSubWindow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top:20px;
+    width: 100%;
+  }
 
   .subWindow {
     background-color: rgba(168, 218, 220, 1.00);
@@ -59,16 +65,13 @@ cssTemplate.innerHTML = /* html */ `
     
     background-color: rgba(168, 218, 220, 1.00);
     position: absolute;
-    top: 25%;
-    left: 25%;
-    height: 30%;
-    width: 30%;
+    
   }
 
   .headerClass {
     position: absolute;
     top: 0;
-    height: 10%;
+    height: 20px;
     width: 100%;
     background: red;
     display: flex;

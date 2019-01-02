@@ -16,7 +16,7 @@ window.customElements.define('life-game', LifeGame)
 let mainwin = new MainWindow()
 document.querySelector('body').appendChild(mainwin)
 
-let app1 = new AppContainer(Memory, 'none', [4, 4])
+let app1 = new AppContainer(Memory, 'none', 4, 4)
 let app2 = new AppContainer(LifeGame)
 mainwin.addApplication(app1)
 
