@@ -25,8 +25,12 @@ cssTemplate.innerHTML = /* html */ `
 
 #infoArea{
   height:50px;
+  padding:5px;
   border-top:solid black;
 }
+
+
+
 </style>
 `
 

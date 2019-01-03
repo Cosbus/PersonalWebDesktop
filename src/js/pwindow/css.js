@@ -73,23 +73,62 @@ cssTemplate.innerHTML = /* html */ `
     top: 0;
     height: 20px;
     width: 100%;
-    background: red;
+    background: #787878;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: solid black;
   }
 
   .headerClass:hover {
     cursor: move;
-    border-width: 20px;
   }
 
   .closeWindowClass {
     position:absolute;
-    right: 2px;
-    height: 90%;
-    background: green;
+    right: 0px;
+    height: 100%;
+    background:#787878;
+    color: #F8F8F8;
+    border: none;
+    padding-left: 5px;
   }
+
+  .closeWindowClass:hover{
+    background: red;
+  }
+
+  
+.dropdown {
+  position: absolute;
+  left: 10px;
+  color:#F8F8F8;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  border: solid black;
+  position: absolute;
+  background-color: #303030;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-element {
+  color: #F8F8F8;
+  text-align: center;
+}
+
+.dropdown-element:hover {
+  background-color: #00BFFF;
+}
+
+.dropdown:hover {
+  cursor: default;
+}
+
 
   #mainContainer {
  
@@ -106,9 +145,6 @@ cssTemplate.innerHTML = /* html */ `
     border: 1px solid blue;
     
   }
-
-  
-
 
   h1 {
     color: yellow;

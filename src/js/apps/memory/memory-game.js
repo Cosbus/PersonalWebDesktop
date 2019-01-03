@@ -13,7 +13,6 @@ class Memory extends window.HTMLElement {
     this.getPictureArray(cols, rows)
     this._firstTurnedTile = null
     this._secondTurnedTile = null
-    // this._lastTile = null
     this._pairs = 0
     this._cols = cols
     this._rows = rows
@@ -38,20 +37,29 @@ class Memory extends window.HTMLElement {
     let templateDiv = this.shadowRoot.querySelectorAll('#memoryContainer template')[0]
       .content.firstElementChild
 
-    let div = document.importNode(templateDiv, false)
+    this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
+      .content.cloneNode(true)
+
+    this._containerHeader = null
+
+    this._div = document.importNode(templateDiv, false)
 
     this._tiles.forEach((tile, index) => {
       a = document.importNode(templateDiv.firstElementChild, true)
-      div.appendChild(a)
+      this._div.appendChild(a)
 
       a.firstElementChild.setAttribute('data-brickNumber', index)
 
       if ((index + 1) % cols === 0) {
-        div.appendChild(document.createElement('br'))
+        this._div.appendChild(document.createElement('br'))
       }
     })
 
-    div.addEventListener('click', event => {
+    this._container.appendChild(this._div)
+  }
+
+  connectedCallback () {
+    this._div.addEventListener('click', event => {
       event.preventDefault()
       let img = event.target.nodeName === 'IMG' ? event.target : event.target.firstElementChild
       let index = parseInt(img.getAttribute('data-brickNumber'))
@@ -61,7 +69,10 @@ class Memory extends window.HTMLElement {
       }
     })
 
-    this._container.appendChild(div)
+    this._containerHeader.querySelector('.dropdown').addEventListener('click', event => {
+      console.log('clicked dropdown')
+      this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
+    })
   }
 
   turnBrick (tile) {
@@ -152,6 +163,15 @@ class Memory extends window.HTMLElement {
       this._time += (this._updateTime / 1000)
       this._timeArea.textContent = `Time: ${Math.round(this._time)} seconds`
     }, this._updateTime)
+  }
+
+  getHeaderTemplate () {
+    return this._headerTemplate
+  }
+
+  setContainerHeader (header) {
+    this._containerHeader = header
+    this._containerHeader.appendChild(this._headerTemplate)
   }
 }
 
