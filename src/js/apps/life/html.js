@@ -23,12 +23,23 @@ htmlTemplate.innerHTML = /* html */ `
     <button id="shapeButton">Draw shape</button>
     <br>  
     <br>
-    <button id="stepButton"> Step forward</button>
+    <button id="stepButton"> Step </button>
     <button id="runButton"> Run Life! </button>
-    <span id="lifeInfo">Number of iterations: 0</span>
+    <span id="lifeInfo">Iterations: 0</span>
     <button id="stopButton"> Stop </button>
+    <button id="snapshotButton"> Take snapshot! </button>
   </div>
  </div>
+
+ <template id= "headerTemplate">
+  <div class="dropdown">
+    <span>Configure</span>
+    <div class="dropdown-content">
+      <p id="dropdown-about" class="dropdown-element">About</p>
+      <p id="dropdown-name" class="dropdown-element"></p>
+    </div>
+  </div>
+</template>
 `
 
 export default htmlTemplate

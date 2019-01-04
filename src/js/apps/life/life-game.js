@@ -20,6 +20,7 @@ class LifeGame extends window.HTMLElement {
     this._stepForwardButton = this.shadowRoot.querySelector('#stepButton')
     this._runButton = this.shadowRoot.querySelector('#runButton')
     this._stopButton = this.shadowRoot.querySelector('#stopButton')
+    this._snapShotButton = this.shadowRoot.querySelector('#snapshotButton')
 
     this._mousePressed = false
     this._lastXPos = 0
@@ -35,9 +36,16 @@ class LifeGame extends window.HTMLElement {
     this._lifeInfo = this.shadowRoot.querySelector('#lifeInfo')
     this._updateTime = 100
 
+    //= document.createElement('img')
+
     this._height = 400
     this._width = 450
     this._configAreaSize = 77
+
+    this._containerHeader = null
+
+    this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
+      .content.cloneNode(true)
   }
 
   connectedCallback () {
@@ -66,16 +74,20 @@ class LifeGame extends window.HTMLElement {
         case this._stopButton:
           clearInterval(this._intervalID)
           break
+        case this._snapShotButton:
+          this._thisTakeSnapShot()
+          break
         default:
           break
       }
     })
-    // this._clearButton.addEventListener('click', this._clearCanvas.bind(this))
-    // this._drawShapeButton.addEventListener('click', this._drawShape.bind(this))
-    // this._stepForwardButton.addEventListener('click', this._stepForward.bind(this))
-    // this._runButton.addEventListener('click', this._runLife.bind(this))
-    //  this._rectangleButton.addEventListener('click', this._drawRectangle.bind(this))
-  //  this._circleButton.addEventListener('click', this._drawCircle.bind(this))
+
+    this._containerHeader.querySelector('.dropdown').addEventListener('click', event => {
+      console.log('clicked dropdown')
+      this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
+    })
+
+    this._sendImageEvent = new window.CustomEvent('sentimage', { detail: this._snapShotURL })
   }
 
   _startDraw (event) {
@@ -200,7 +212,7 @@ class LifeGame extends window.HTMLElement {
     this._updateArray()
     this._clearCanvas()
     this._drawPatternOnCanvas()
-    this._lifeInfo.textContent = `Number of iterations: ${this._noIterations}`
+    this._lifeInfo.textContent = `Iterations: ${this._noIterations}`
     this._noIterations++
   }
 
@@ -279,6 +291,33 @@ class LifeGame extends window.HTMLElement {
     this._intervalID = setInterval(() => {
       this._stepForward()
     }, this._updateTime)
+  }
+
+  setContainerHeader (header) {
+    this._containerHeader = header
+    this._containerHeader.appendChild(this._headerTemplate)
+  }
+
+  _thisTakeSnapShot () {
+    this._getPatternFromCanvas()
+    this._snapShotURL = this._canvas.toDataURL('img/png')
+    console.log(this._snapShotURL)
+    this._canvas.style.background = 'black'
+    setTimeout(() => {
+      this._canvas.style.background = 'rgba(168, 218, 220, 1.00)'
+      this._clearCanvas()
+      this._drawPatternOnCanvas()
+    }, 100)
+
+    this.dispatchEvent(this._sendImageEvent)
+  }
+
+  getSnapShot () {
+    return this._snapShotURL
+  }
+
+  setSnapShot (snapShot) {
+    this._snapShotURL = snapShot
   }
 }
 

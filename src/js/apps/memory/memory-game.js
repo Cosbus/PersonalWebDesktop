@@ -93,9 +93,9 @@ class Memory extends window.HTMLElement {
         return
       }
       // Second brick is clicked
-      // if (this._secondTurnedTile.getFrontImage() === this._firstTurnedTile.getFrontImage()) {
-      //   return
-      // }
+      if (tile.getImageNode() === this._firstTurnedTile.getImageNode()) { // same brick
+        return
+      }
 
       this._tries += 1
       this._triesArea.textContent = `Number of tries: ${this._tries}`

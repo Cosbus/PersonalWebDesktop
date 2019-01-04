@@ -14,7 +14,7 @@ cssTemplate.innerHTML = /* html */ `
 
   .mainWindow {
     position: absolute;
-    border: red;
+    border: black;
     border-style: solid;
     background: url("../image/Tarfala.svg") no-repeat center center fixed; 
     -webkit-background-size: cover;
@@ -43,9 +43,15 @@ cssTemplate.innerHTML = /* html */ `
     position: absolute;
     top:20px;
     width: 100%;
+    height:100%;
   }
 
   .subWindow {
+    border-radius:2.5%;
+    -webkit-box-shadow: 10px 10px 30px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 30px -6px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 30px -6px rgba(0,0,0,0.75);
+    overflow: hidden;
     background-color: rgba(168, 218, 220, 1.00);
   }
 
@@ -101,7 +107,9 @@ cssTemplate.innerHTML = /* html */ `
   
 .dropdown {
   position: absolute;
-  left: 10px;
+  padding-left: 10px;
+  padding-right: 5px;
+  left: 0px;
   color:#F8F8F8;
   display: inline-block;
 }
@@ -127,6 +135,7 @@ cssTemplate.innerHTML = /* html */ `
 
 .dropdown:hover {
   cursor: default;
+  background-color: #00BFFF;
 }
 
 

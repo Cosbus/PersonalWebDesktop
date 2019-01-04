@@ -44,6 +44,22 @@ class MainWindow extends Pwindow {
           this.addSubWindow(new SubWindow(application.getNewApplication()),
             application.getApplication(application.getNoOfApplicationInstances() - 1).getWidthRequired(),
             application.getApplication(application.getNoOfApplicationInstances() - 1).getHeightRequired() + this._headerSize)
+
+          let app = application.getApplication(application.getNoOfApplicationInstances() - 1)
+          // If application is life-game, set eventlistener
+          if (application.getName() === 'life') {
+            app.addEventListener('sentimage', e => {
+              let imgURL = app.getSnapShot()
+              for (let application2 of this._applications) {
+                if (application2.getName() === 'chat') {
+                  application2.getAllApplications().forEach(function (element) {
+                    element.importImageURL(imgURL)
+                    element.pasteImage()
+                  })
+                }
+              }
+            })
+          }
         }
       }
     })

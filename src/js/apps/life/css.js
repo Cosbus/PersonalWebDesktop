@@ -21,7 +21,6 @@ cssTemplate.innerHTML = /* html */ `
 
   #configArea{
     border-top: solid black;
-    ;
     margin-top: -5px;
     padding: 10px;
   }

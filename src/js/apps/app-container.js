@@ -2,7 +2,7 @@ import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
 
 class AppContainer extends window.HTMLElement {
-  constructor (Application, appicon, ...args) {
+  constructor (Application, appicon, name, ...args) {
     super()
     this.attachShadow({ mode: 'open' })
 
@@ -13,6 +13,7 @@ class AppContainer extends window.HTMLElement {
     this._Application = Application
     this._applicationInstances = []
     this._args = args
+    this._name = name
     this._icon = appicon
   }
 
@@ -30,6 +31,10 @@ class AppContainer extends window.HTMLElement {
     } else {
       return 'No application for that index'
     }
+  }
+
+  getAllApplications () {
+    return this._applicationInstances
   }
 
   getNewApplication () {
@@ -64,6 +69,10 @@ class AppContainer extends window.HTMLElement {
 
   setLeftPosition (pos) {
     this._appButton.style.left = pos + 'px'
+  }
+
+  getName () {
+    return this._name
   }
 }
 
