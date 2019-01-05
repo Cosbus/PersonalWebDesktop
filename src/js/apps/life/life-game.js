@@ -29,6 +29,8 @@ class LifeGame extends window.HTMLElement {
     //   this._ctx.lineWidth = 5
     this._ctx.strokeStyle = 'black'
 
+    this._isFocused = true
+
     this._arr = []
     this._nextArr = []
     this._intervalID = null
@@ -318,6 +320,14 @@ class LifeGame extends window.HTMLElement {
 
   setSnapShot (snapShot) {
     this._snapShotURL = snapShot
+  }
+
+  setFocusedTrue () {
+    this._isFocused = true
+  }
+
+  setFocusedFalse () {
+    this._isFocused = false
   }
 }
 

@@ -20,10 +20,11 @@ class ChatApp extends window.HTMLElement {
     this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
       .content.cloneNode(true)
 
-    // this._chatInput = this.shadowRoot.querySelector('#chatInput')
     this._chatContent = this.shadowRoot.querySelector('#chatContent')
-    this._chatInput = null
+    this._chatTextArea = null
     this._clientName = null
+    this._tempText = ''
+    this._isFocused = true
 
     this._serverURL = 'ws://vhost3.lnu.se:20080/socket/'
     this._webSocket = null
@@ -40,9 +41,14 @@ class ChatApp extends window.HTMLElement {
   connectedCallback () {
     this._initWebSocket()
 
+    this._chatContent.addEventListener('click', event => {
+      this._chatTextArea.focus()
+    })
+
     this._webSocket.addEventListener('message', event => {
       if (this._connected) {
-        this._chatInput.remove()
+        this._tempText = this._chatTextArea.value
+        this._chatTextArea.remove()
         this._clientName.remove()
       } else if (JSON.parse(event.data).username === 'The Server' &&
       JSON.parse(event.data).data === 'You are connected!') {
@@ -54,16 +60,18 @@ class ChatApp extends window.HTMLElement {
       messageTemplate.querySelector('#message').textContent = JSON.parse(event.data).data
       this._clientName = messageTemplate.querySelectorAll('#clientName')[messageTemplate.querySelectorAll('#clientName').length - 1]
       this._clientName.textContent = this._userName + ': '
-      this._chatInput = messageTemplate.querySelectorAll('#chatInput')[messageTemplate.querySelectorAll('#chatInput').length - 1]
+      this._chatTextArea = messageTemplate.querySelectorAll('#chatTextArea')[messageTemplate.querySelectorAll('#chatTextArea').length - 1]
       this._chatContent.appendChild(messageTemplate)
-      console.log(this._chatInput)
+      this._chatTextArea.value = this._tempText
+      if (this._isFocused) {
+        this._chatTextArea.focus()
+      }
 
       if (this._chatContent.scrollHeight > this._chatContent.clientHeight) { // Overflow
-        console.log(this._chatContent.scrollHeight)
         this._chatContent.scrollTo(0, this._chatContent.scrollHeight)
       }
 
-      this._chatInput.addEventListener('keydown', this._chatInputEvent.bind(this))
+      this._chatTextArea.addEventListener('keydown', this._chatTextAreaEvent.bind(this))
     })
   }
 
@@ -71,13 +79,12 @@ class ChatApp extends window.HTMLElement {
     this._webSocket.close()
   }
 
-  _chatInputEvent (event) {
+  _chatTextAreaEvent (event) {
     if (event.keyCode === 13) {
-      console.log('submitted')
-      this._sendMessage(this._chatInput.value)
-      console.log(this._chatInput.value)
-      this._chatInput.removeEventListener('keydown', this._chatInputEvent)
-      this._chatInput.remove()
+      this._sendMessage(this._chatTextArea.value)
+      this._chatTextArea.removeEventListener('keydown', this._chatTextAreaEvent)
+      this._chatTextArea.value = ''
+      this._chatTextArea.remove()
     }
   }
 
@@ -121,6 +128,14 @@ class ChatApp extends window.HTMLElement {
   setContainerHeader (header) {
     this._containerHeader = header
     this._containerHeader.appendChild(this._headerTemplate)
+  }
+
+  setFocusedTrue () {
+    this._isFocused = true
+  }
+
+  setFocusedFalse () {
+    this._isFocused = false
   }
 }
 

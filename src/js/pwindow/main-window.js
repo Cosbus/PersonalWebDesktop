@@ -88,10 +88,14 @@ class MainWindow extends Pwindow {
     this._container.addEventListener('mousedown', e => {
       // Make window appear in front
       this._highestZindex += 1
+      this._windows.forEach(function (e) {
+        e.isNotFocused()
+      })
       for (let window of this._windows) {
         if (e.target === window) {
           this._activeWindow = window
           this._activeWindow.setZIndex(this._highestZindex)
+          this._activeWindow.isFocused()
           this._dragStart(this._activeWindow, e)
         }
       }

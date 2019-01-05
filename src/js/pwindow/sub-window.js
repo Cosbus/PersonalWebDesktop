@@ -28,6 +28,14 @@ class SubWindow extends Pwindow {
       }
     })
   }
+
+  isFocused () {
+    this._content.setFocusedTrue()
+  }
+
+  isNotFocused () {
+    this._content.setFocusedFalse()
+  }
 }
 
 export default SubWindow

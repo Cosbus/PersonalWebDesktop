@@ -19,6 +19,8 @@ class Memory extends window.HTMLElement {
     this._tries = 0
     this._firstClick = true
 
+    this._isFocused = true
+
     this._intervalID = null
     this._updateTime = 100
     this._time = 0
@@ -172,6 +174,14 @@ class Memory extends window.HTMLElement {
   setContainerHeader (header) {
     this._containerHeader = header
     this._containerHeader.appendChild(this._headerTemplate)
+  }
+
+  setFocusedTrue () {
+    this._isFocused = true
+  }
+
+  setFocusedFalse () {
+    this._isFocused = false
   }
 }
 

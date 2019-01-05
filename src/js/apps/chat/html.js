@@ -15,12 +15,16 @@ htmlTemplate.innerHTML = /* html */ `
 </div>
 
 <template id="messageTemplate">
-  <span id="userName"></span>
-  <span id="message"></span>
+  <div id="messageArea">
+    <div id="userName"></div>
+    <div id="message"></div>
+  </div>
   <br>
-  <br>
-  <span id="clientName"></span> <input id="chatInput" />
- </template>
+  <div id="userTempInputArea">
+    <div id="clientName"></div>
+    <textarea id="chatTextArea"></textarea> 
+  </div>
+</template>
 
 <template id="headerTemplate">
   <div class="dropdown">

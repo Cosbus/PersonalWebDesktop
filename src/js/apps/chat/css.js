@@ -41,15 +41,57 @@ cssTemplate.innerHTML = /* html */ `
   border-bottom: solid black;
 }
 
+#userTempInputArea{
+  width: 95%;
+  left:0;
+}
+
+#clientName {
+  width: 100%;
+  left:0;
+  top:0;
+  color:#FFD700;
+}
+
+#chatTextArea {
+  outline: none;
+  background: #696666;
+  border: none;
+  color:#86e2d5;
+  width:100%;
+  }
+
+#messageArea{
+  width: 95%;
+  left: 0;
+  color:#baf73c;
+}
+
+#userName{
+  width: 100%;
+  left: 0;
+  color: #FFD700;
+}
+
+#message {
+  width: 100%;
+  left: 0;
+}
+
 #chatContent{
   position:absolute;
   overflow-wrap: break-word;
   overflow:scroll;
   
+  background-color:#696666;
+  border-left:1px black solid;
+  
   padding:5px;
-  bottom:0;
-  height:88%;
+  bottom:10px;
+  height:85%;
   width:100%;
+
+  
 }
 
 ::-webkit-scrollbar {
