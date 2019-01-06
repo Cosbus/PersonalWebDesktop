@@ -1,5 +1,9 @@
 import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
+import SubWindow from '../../pwindow/sub-window.js'
+import ChannelView from './channelView/channel-view.js'
+import Dragger from '../../utils/Dragger.js'
+import WindowHandler from '../../utils/WindowHandler.js'
 
 class ChatApp extends window.HTMLElement {
   constructor () {
@@ -20,10 +24,12 @@ class ChatApp extends window.HTMLElement {
     this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
       .content.cloneNode(true)
 
+    this._container = this.shadowRoot.querySelector('#chatContainer')
     this._chatContent = this.shadowRoot.querySelector('#chatContent')
     this._toggleScrollButton = this.shadowRoot.querySelector('#toggleScrollButton')
     this._headerUserP = this.shadowRoot.querySelector('#headerUserP')
-    this._headerChannelP = this.shadowRoot.querySelector('#headerUserP')
+    this._headerChannelP = this.shadowRoot.querySelector('#headerChannelP')
+    this._channelButton = this.shadowRoot.querySelector('#channelButton')
 
     this._chatTextArea = null
     this._clientName = null
@@ -43,7 +49,10 @@ class ChatApp extends window.HTMLElement {
 
     this._height = 400
     this._width = 500
-    this._spacer = 20
+
+    this._subWindowOpen = false
+    this._windowHandler = new WindowHandler(this._container)
+    this._dragger = new Dragger(this._container, this._windowHandler)
   }
 
   connectedCallback () {
@@ -66,6 +75,9 @@ class ChatApp extends window.HTMLElement {
           break
         case this._chatContent:
           this._chatTextArea.focus()
+          break
+        case this._channelButton:
+          this._openChannelWindow()
           break
       }
     })
@@ -97,7 +109,7 @@ class ChatApp extends window.HTMLElement {
       }
 
       if (this._chatContent.scrollHeight > this._chatContent.clientHeight) { // Overflow
-        this._chatContent.scrollTo(0, this._chatContent.scrollHeight)
+        this._chatContent.scroll(0, this._chatContent.scrollHeight - 10)
       }
 
       this._chatTextArea.addEventListener('keydown', this._chatTextAreaEvent.bind(this))
@@ -120,6 +132,16 @@ class ChatApp extends window.HTMLElement {
   _populateHeaderInfo () {
     this._headerChannelP.textContent = 'Channel: ' + this._channel
     this._headerUserP.textContent = 'User: ' + this._userName
+  }
+
+  _openChannelWindow () {
+    let channelView = new ChannelView()
+    let channelWindow = new SubWindow(channelView)
+    this._windowHandler.addWindow(channelWindow, channelView.getWidthRequired(),
+      channelView.getHeightRequired())
+    this._dragger.startListening()
+    console.log('openchannel')
+    this._subWindowOpen = true
   }
 
   _initWebSocket () {
@@ -152,11 +174,11 @@ class ChatApp extends window.HTMLElement {
   }
 
   getWidthRequired () {
-    return this._width + this._spacer
+    return this._width
   }
 
   getHeightRequired () {
-    return this._height + this._spacer
+    return this._height
   }
 
   setContainerHeader (header) {

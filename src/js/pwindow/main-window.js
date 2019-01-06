@@ -1,5 +1,7 @@
 import Pwindow from './p-window.js'
 import SubWindow from './sub-window.js'
+import Dragger from '../utils/Dragger.js'
+import WindowHandler from '../utils/WindowHandler.js'
 
 class MainWindow extends Pwindow {
   constructor () {
@@ -35,16 +37,20 @@ class MainWindow extends Pwindow {
     this._AppContainer = this.shadowRoot.querySelector('#expandBubble')
     this._AppContIdleHeight = '30px'
     this._AppContIdleWidth = '30px'
+
+    // Add misc utilities
+    this._windowHandler = new WindowHandler(this._workSpace)
+    this._dragger = new Dragger(this._container, this._windowHandler)
   }
 
   connectedCallback () {
     this._container.addEventListener('click', e => {
       for (let application of this._applications) {
         if (e.target === application) {
-          this.addSubWindow(new SubWindow(application.getNewApplication()),
+          this._windowHandler.addWindow(new SubWindow(application.getNewApplication()),
             application.getApplication(application.getNoOfApplicationInstances() - 1).getWidthRequired(),
             application.getApplication(application.getNoOfApplicationInstances() - 1).getHeightRequired() + this._headerSize)
-
+          this._dragger.startListening()
           let app = application.getApplication(application.getNoOfApplicationInstances() - 1)
           // If application is life-game, set eventlistener
           if (application.getName() === 'life') {
@@ -66,11 +72,14 @@ class MainWindow extends Pwindow {
 
     this._AppContainer.addEventListener('mouseover', e => {
       // Make sure element moves to front
-      this._highestZindex++
-      this._windows.forEach(function (e) {
-        e.isNotFocused()
-      })
-      this._AppContainer.style.zIndex = this._highestZindex
+      // this._highestZindex++
+      this._windowHandler.incrementZindex()
+      // this._windows.forEach(function (e) {
+      //  e.isNotFocused()
+      // })
+      this._windowHandler.unfocusAllWindows()
+      // this._AppContainer.style.zIndex = this._highestZindex
+      this._AppContainer.style.zIndex = this._windowHandler.getHighestZindex()
       this._applications.forEach((element) => {
         element.style.visibility = 'visible'
       })
@@ -88,7 +97,7 @@ class MainWindow extends Pwindow {
       this._AppContainer.style.height = this._AppContIdleHeight
     })
 
-    this._container.addEventListener('mousedown', e => {
+    /*   this._container.addEventListener('mousedown', e => {
       // Make window appear in front
       this._highestZindex += 1
       this._windows.forEach(function (e) {
@@ -99,26 +108,29 @@ class MainWindow extends Pwindow {
           this._activeWindow = window
           this._activeWindow.setZIndex(this._highestZindex)
           this._activeWindow.isFocused()
-          this._dragStart(this._activeWindow, e)
+          this._dragger.dragStart(this._activeWindow, e)
+          // this._dragStart(this._activeWindow, e)
         }
       }
     }, false)
 
     this._container.addEventListener('mousemove', e => {
-      this._drag(this._activeWindow, e)
+      this._dragger.drag(this._activeWindow, e)
+      // this._drag(this._activeWindow, e)
     }, false)
 
     this._container.addEventListener('mouseup', e => {
       for (let window of this._windows) { // Find the specific window
         if (e.target === window) {
           this._activeWindow = window
-          this._dragEnd(this._activeWindow, e)
+          this._dragger.dragEnd(this._activeWindow, e)
+          // this._dragEnd(this._activeWindow, e)
         }
       }
     }, false)
   }
 
-  _dragStart (window, event) {
+  /* _dragStart (window, event) {
     window.setInitialPointerPosX(event.clientX - window.getXPosOffset())
     window.setInitialPointerPosY(event.clientY - window.getYPosOffset())
 
@@ -151,6 +163,7 @@ class MainWindow extends Pwindow {
   _setNewElementPos (window) {
     window.setContainerStyleTransform('translate3d(' + window.getCurrentPointerPosX() + 'px, ' +
      window.getCurrentPointerPosY() + 'px, 0)')
+  } */
   }
 
   addApplication (application) {
@@ -164,7 +177,7 @@ class MainWindow extends Pwindow {
     this._AppContainer.appendChild(application)
   }
 
-  addSubWindow (subWindow, width, height) {
+  /* addSubWindow (subWindow, width, height) {
     if (this._windows.length === 0) {
       subWindow.setLeftPosition(this._firstWindowStartingLeftPos)
       subWindow.setTopPosition(this._firstWindowStartingTopPos)
@@ -197,7 +210,7 @@ class MainWindow extends Pwindow {
     (parseInt(elem.getLeftPosition(), 10) >= 0) &&
     ((parseInt(elem.getTopPosition(), 10) + parseInt(elem.getHeight(), 10)) <= window.innerHeight) &&
     ((parseInt(elem.getLeftPosition(), 10) + parseInt(elem.getWidth(), 10)) <= window.innerWidth))
-  }
+  } */
 }
 
 export default MainWindow

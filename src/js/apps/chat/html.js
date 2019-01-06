@@ -3,19 +3,22 @@ htmlTemplate.innerHTML = /* html */ `
  <link type="text/css" rel="stylesheet" href="/css.js" />
  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
- <div id="infoArea">
- </div>
- <div id="chatArea">
-  <div id="chatHeader">
-    <div id="chatHeaderInfo">
-      <p id="headerUserP">Username:</p>
-      <p id="headerChannelP">Channel:</p>
-    </div>
-    <button id="toggleScrollButton">Toggle scroll</button>
+<div id="chatContainer">
+  <div id="infoArea">
+    <button id="channelButton">Channel +</button>
   </div>
-  
-  <div id="chatContent">
-  <div id="imageTest">
+  <div id="chatArea">
+    <div id="chatHeader">
+      <div id="chatHeaderInfo">
+        <p id="headerUserP">Username:</p>
+        <p id="headerChannelP">Channel:</p>
+      </div>
+      <button id="toggleScrollButton">Toggle scroll</button>
+    </div>
+    
+    <div id="chatContent">
+    <div id="imageTest">
+    </div>
   </div>
 </div>
 
@@ -40,6 +43,7 @@ htmlTemplate.innerHTML = /* html */ `
     </div>
   </div>
 </template>
+
 `
 
 export default htmlTemplate

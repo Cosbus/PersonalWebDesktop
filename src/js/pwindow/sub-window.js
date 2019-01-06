@@ -18,13 +18,17 @@ class SubWindow extends Pwindow {
     this._workSpace.appendChild(this._content)
     // this._containerHeader.appendChild(this._headerTemplate)
     this._content.setContainerHeader(this._containerHeader)
+
+    this._closeWindowEvent = null
   }
 
   connectedCallback () {
+    this._closeWindowEvent = new window.CustomEvent('closeWindow', { detail: this._shadowRoot })
     this._container.addEventListener('click', e => {
       // Closebutton clicked
       if (e.target === this.shadowRoot.querySelector('#closeWindowButton')) {
-        e.target.parentNode.parentNode.remove()
+        this.dispatchEvent(this._closeWindowEvent)
+        //  e.target.parentNode.parentNode.remove()
       }
     })
   }

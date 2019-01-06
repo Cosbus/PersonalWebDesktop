@@ -6,12 +6,12 @@ cssTemplate.innerHTML = /* html */ `
     position:absolute;
     height: 100%;
     width:100%;
-    padding: 0;
-    margin: 0; 
+    margin: 0;
   }
 
   html, body {
   }
+
 
 #infoArea {
   width: 30%;
@@ -21,6 +21,12 @@ cssTemplate.innerHTML = /* html */ `
   top:0;
   position: absolute;
   border-right: solid black;
+}
+
+#channelButton{
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 #chatArea{
@@ -77,11 +83,14 @@ cssTemplate.innerHTML = /* html */ `
 
 #userTempInputArea{
   width: 95%;
+  
+  margin:5px;
   left:0;
 }
 
 #clientName {
   width: 100%;
+  
   left:0;
   top:0;
   color:#FFD700;
@@ -93,23 +102,28 @@ cssTemplate.innerHTML = /* html */ `
   border: none;
   color:#86e2d5;
   width:100%;
+
   }
 
 #messageArea{
   width: 95%;
   left: 0;
+  margin:5px;
+  
   color:#baf73c;
 }
 
 #userName{
   width: 100%;
   left: 0;
+  
   color: #FFD700;
 }
 
 #message {
   width: 100%;
   left: 0;
+  
 }
 
 #chatContent{
@@ -117,10 +131,10 @@ cssTemplate.innerHTML = /* html */ `
   overflow-wrap: break-word;
   
   background-color:#696666;
-  border-left:1px black solid;
- 
-  padding:5px;
-  bottom:10px;
+  border-left: 1px black solid;
+  border-top: 1px black solid;
+  padding: 0px;
+  top:10%;
   height:85%;
   width:100%;
   
