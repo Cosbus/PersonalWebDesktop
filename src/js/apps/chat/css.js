@@ -41,6 +41,40 @@ cssTemplate.innerHTML = /* html */ `
   border-bottom: solid black;
 }
 
+#chatHeaderInfo{
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  margin:0;
+  padding: 0;
+}
+
+#headerUserP{
+  position: absolute;
+  top:3px;
+  left: 5px;
+  padding: 0;
+  margin: 0;
+}
+
+#headerChannelP{
+  position: absolute;
+  bottom: 3px;
+  left: 5px;
+  padding: 0;
+  margin: 0;
+}
+  
+
+#toggleScrollButton{
+  position: absolute;
+  width:35%;
+  right: 5px;
+  top: 20%;
+  height: 60%;
+  bottom: 20%;
+}
+
 #userTempInputArea{
   width: 95%;
   left:0;
@@ -81,22 +115,25 @@ cssTemplate.innerHTML = /* html */ `
 #chatContent{
   position:absolute;
   overflow-wrap: break-word;
-  overflow:scroll;
   
   background-color:#696666;
   border-left:1px black solid;
-  
+ 
   padding:5px;
   bottom:10px;
   height:85%;
   width:100%;
-
   
 }
 
-::-webkit-scrollbar {
-    width: 0px;
-    background: transparent; /* make scrollbar transparent */
+.scrollerOff{
+  overflow-x:hidden;
+  overflow-y:hidden;
+}
+
+.scrollerOn {
+  overflow-x:hidden;
+  overflow-y:scroll;
 }
 
 </style>

@@ -7,6 +7,11 @@ htmlTemplate.innerHTML = /* html */ `
  </div>
  <div id="chatArea">
   <div id="chatHeader">
+    <div id="chatHeaderInfo">
+      <p id="headerUserP">Username:</p>
+      <p id="headerChannelP">Channel:</p>
+    </div>
+    <button id="toggleScrollButton">Toggle scroll</button>
   </div>
   
   <div id="chatContent">

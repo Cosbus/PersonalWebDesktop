@@ -67,6 +67,9 @@ class MainWindow extends Pwindow {
     this._AppContainer.addEventListener('mouseover', e => {
       // Make sure element moves to front
       this._highestZindex++
+      this._windows.forEach(function (e) {
+        e.isNotFocused()
+      })
       this._AppContainer.style.zIndex = this._highestZindex
       this._applications.forEach((element) => {
         element.style.visibility = 'visible'

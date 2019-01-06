@@ -21,10 +21,17 @@ class ChatApp extends window.HTMLElement {
       .content.cloneNode(true)
 
     this._chatContent = this.shadowRoot.querySelector('#chatContent')
+    this._toggleScrollButton = this.shadowRoot.querySelector('#toggleScrollButton')
+    this._headerUserP = this.shadowRoot.querySelector('#headerUserP')
+    this._headerChannelP = this.shadowRoot.querySelector('#headerUserP')
+
     this._chatTextArea = null
     this._clientName = null
     this._tempText = ''
     this._isFocused = true
+    this._scrollerOff = true
+
+    this._chatContent.classList.add('scrollerOff')
 
     this._serverURL = 'ws://vhost3.lnu.se:20080/socket/'
     this._webSocket = null
@@ -36,14 +43,36 @@ class ChatApp extends window.HTMLElement {
 
     this._height = 400
     this._width = 500
+    this._spacer = 20
   }
 
   connectedCallback () {
     this._initWebSocket()
+    this._populateHeaderInfo()
 
-    this._chatContent.addEventListener('click', event => {
-      this._chatTextArea.focus()
+    this.shadowRoot.addEventListener('click', event => {
+      switch (event.target) {
+        case this._toggleScrollButton:
+          if (this._scrollerOff) {
+            this._chatContent.classList.remove('scrollerOff')
+            this._chatContent.classList.add('scrollerOn')
+            this._scrollerOff = false
+          } else {
+            this._chatContent.classList.remove('scrollerOn')
+            this._chatContent.classList.add('scrollerOff')
+            this._scrollerOff = true
+          }
+          this._chatTextArea.focus()
+          break
+        case this._chatContent:
+          this._chatTextArea.focus()
+          break
+      }
     })
+
+    // this._chatContent.addEventListener('click', event => {
+    // this._chatTextArea.focus()
+    // })
 
     this._webSocket.addEventListener('message', event => {
       if (this._connected) {
@@ -88,6 +117,11 @@ class ChatApp extends window.HTMLElement {
     }
   }
 
+  _populateHeaderInfo () {
+    this._headerChannelP.textContent = 'Channel: ' + this._channel
+    this._headerUserP.textContent = 'User: ' + this._userName
+  }
+
   _initWebSocket () {
     this._webSocket = new window.WebSocket(this._serverURL)
   }
@@ -118,11 +152,11 @@ class ChatApp extends window.HTMLElement {
   }
 
   getWidthRequired () {
-    return this._width
+    return this._width + this._spacer
   }
 
   getHeightRequired () {
-    return this._height
+    return this._height + this._spacer
   }
 
   setContainerHeader (header) {
@@ -135,6 +169,7 @@ class ChatApp extends window.HTMLElement {
   }
 
   setFocusedFalse () {
+    console.log('lost focus')
     this._isFocused = false
   }
 }
