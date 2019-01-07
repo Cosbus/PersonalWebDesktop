@@ -5,7 +5,8 @@ import AppContainer from './apps/app-container.js'
 import Memory from './apps/memory/memory-game.js'
 import LifeGame from './apps/life/life-game.js'
 import ChatApp from './apps/chat/chat-app.js'
-import ChannelView from './apps/chat/channelView/channel-view.js'
+import ChannelView from './apps/chat/channelView/channel-view.js' // Flytta dessa?
+import UserNameView from './apps/chat/username-view/username-view.js' // Kanske flytta dessa?
 
 // Registering the custom elements here
 window.customElements.define('p-window', Pwindow)
@@ -16,6 +17,7 @@ window.customElements.define('memory-game', Memory)
 window.customElements.define('life-game', LifeGame)
 window.customElements.define('chat-app', ChatApp)
 window.customElements.define('channel-view', ChannelView)
+window.customElements.define('username-view', UserNameView)
 
 let mainwin = new MainWindow()
 document.querySelector('body').appendChild(mainwin)

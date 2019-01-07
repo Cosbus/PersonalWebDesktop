@@ -8,13 +8,17 @@ class Dragger {
   startListening () {
     this._container.addEventListener('mousedown', e => {
       // Make window appear in front
+      console.log('mousedown')
       this._windowHandler.incrementZindex()
       this._windowHandler.unfocusAllWindows()
 
       // If window is pressed start dragaction
       let win = this._windowHandler.findWindowFromEvent(e)
+      console.log(win)
       if (win !== (null || undefined)) {
         this._windowHandler.setActiveWindow(win)
+        this._windowHandler.setWindowHighestZIndex(win)
+        this._windowHandler.setWindowIsFocused(win)
         this.dragStart(this._windowHandler.getActiveWindow(), e)
       }
     }, false)

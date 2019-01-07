@@ -23,7 +23,7 @@ class SubWindow extends Pwindow {
   }
 
   connectedCallback () {
-    this._closeWindowEvent = new window.CustomEvent('closeWindow', { detail: this._shadowRoot })
+    this._closeWindowEvent = new window.CustomEvent('closeWindow', { detail: this._container })
     this._container.addEventListener('click', e => {
       // Closebutton clicked
       if (e.target === this.shadowRoot.querySelector('#closeWindowButton')) {

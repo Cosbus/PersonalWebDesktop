@@ -4,6 +4,7 @@ import SubWindow from '../../pwindow/sub-window.js'
 import ChannelView from './channelView/channel-view.js'
 import Dragger from '../../utils/Dragger.js'
 import WindowHandler from '../../utils/WindowHandler.js'
+import UserNameView from './username-view/username-view.js'
 
 class ChatApp extends window.HTMLElement {
   constructor () {
@@ -58,6 +59,9 @@ class ChatApp extends window.HTMLElement {
   connectedCallback () {
     this._initWebSocket()
     this._populateHeaderInfo()
+
+    // Open user-name view
+    this._openUserNameWindow()
 
     this.shadowRoot.addEventListener('click', event => {
       switch (event.target) {
@@ -141,6 +145,16 @@ class ChatApp extends window.HTMLElement {
       channelView.getHeightRequired())
     this._dragger.startListening()
     console.log('openchannel')
+    this._subWindowOpen = true
+  }
+
+  _openUserNameWindow () {
+    let userNameView = new UserNameView()
+    let userNameWindow = new SubWindow(userNameView)
+    this._windowHandler.addWindow(userNameWindow, userNameView.getWidthRequired(),
+      userNameView.getHeightRequired())
+    this._dragger.startListening()
+
     this._subWindowOpen = true
   }
 

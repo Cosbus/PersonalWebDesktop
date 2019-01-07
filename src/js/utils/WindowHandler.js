@@ -10,13 +10,6 @@ class WindowHandler {
     this._nextWindowLeftOffset = 20
     this._headerSize = 20
     this._container = container
-
-    this._container.addEventListener('click', e => {
-      let window = this.findWindowFromEvent(e)
-      if (window !== null) {
-        this.removeWindow(window)
-      }
-    })
   }
 
   getHighestZindex () {
@@ -43,8 +36,16 @@ class WindowHandler {
 
   setActiveWindow (window) {
     this._activeWindow = window
-    this._activeWindow.setZIndex(this._highestZindex)
-    this._activeWindow.isFocused()
+    // this._activeWindow.setZIndex(this._highestZindex)
+    // this._activeWindow.isFocused()
+  }
+
+  setWindowHighestZIndex (window) {
+    window.setZIndex(this._highestZindex)
+  }
+
+  setWindowIsFocused (window) {
+    window.isFocused()
   }
 
   getActiveWindow () {
@@ -77,6 +78,14 @@ class WindowHandler {
     this._windows.push(window)
 
     this._container.appendChild(window)
+
+    // Add eventlistener for window closing
+    window.addEventListener('closeWindow', e => {
+      let window = this.findWindowFromEvent(e)
+      if (window !== null) {
+        this.removeWindow(window, e)
+      }
+    })
   }
 
   _isInViewport (elem) {
@@ -96,8 +105,10 @@ class WindowHandler {
     }
   }
 
-  removeWindow (window) {
+  removeWindow (window, e) {
     this._windows.splice(this.getIndexOfWindow(window), 1)
+    console.log(e.detail)
+    e.detail.remove()
   }
 }
 
