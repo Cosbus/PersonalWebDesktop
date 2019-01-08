@@ -135,7 +135,7 @@ cssTemplate.innerHTML = /* html */ `
   border-top: 1px black solid;
   padding: 0px;
   top:10%;
-  height:85%;
+  height:90%;
   width:100%;
   
 }

@@ -22,7 +22,7 @@ window.customElements.define('username-view', UserNameView)
 let mainwin = new MainWindow()
 document.querySelector('body').appendChild(mainwin)
 
-let app1 = new AppContainer(Memory, 'none', 'memory', 4, 4)
+let app1 = new AppContainer(Memory, 'none', 'memory', 2, 2)
 let app2 = new AppContainer(LifeGame, 'none', 'life')
 let app3 = new AppContainer(ChatApp, 'none', 'chat')
 mainwin.addApplication(app1)

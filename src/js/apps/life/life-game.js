@@ -61,7 +61,7 @@ class LifeGame extends window.HTMLElement {
       switch (e.target) {
         case this._clearButton:
           this._noIterations = 0
-          this._lifeInfo.textContent = `Number of iterations: ${this._noIterations}`
+          this._lifeInfo.textContent = `Iterations: ${this._noIterations}`
           this._clearCanvas()
           break
         case this._drawShapeButton:

@@ -43,7 +43,7 @@ cssTemplate.innerHTML = /* html */ `
     position: absolute;
     top:20px;
     width: 100%;
-    height:100%;
+    bottom:0;
   }
 
   .subWindow {
@@ -122,6 +122,16 @@ cssTemplate.innerHTML = /* html */ `
   min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+}
+
+.dropdown-sub1-content {
+  display: none;
+  border: solid black;
+  position: absolute;
+  background-color: #303030;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 2;
 }
 
 .dropdown-element {
