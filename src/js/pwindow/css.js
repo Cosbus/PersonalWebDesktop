@@ -148,6 +148,10 @@ cssTemplate.innerHTML = /* html */ `
   background-color: #00BFFF;
 }
 
+.elementActive {
+  background-color: #00BFFF;
+}
+
 
   #mainContainer {
  

@@ -18,19 +18,33 @@ cssTemplate.innerHTML = /* html */ `
   visibility: hidden;
 }
 
-#memoryContainer{
-  text-align: center;
+.memContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position:absolute;
   height: 65%;
   left: 0;
   right: 0;
   top:0;
+  bottom: 0;
   margin: 0;
   padding:0;
   bottom: 30%;
-  border: red solid;
+}
+
+.highContainer {
+  display: grid;
+  align-items: center;
   
-  display:grid;
+  height: 65%;
+  left: 0;
+  right: 0;
+  top:0;
+  bottom: 0;
+  margin: 0;
+  padding:0;
+  bottom: 30%;
 }
 
 #infoArea{
@@ -38,9 +52,9 @@ cssTemplate.innerHTML = /* html */ `
   width:100%;
   display:grid;
   grid-template-rows: 1fr 1fr 1fr;
-  border:solid black;
   position: absolute;
   bottom:0;
+  border-top:black solid;
   
   margin: 0;
   padding:0;

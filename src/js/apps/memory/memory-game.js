@@ -7,10 +7,14 @@ class Memory extends window.HTMLElement {
   constructor (rows = 2, cols = 2) {
     super()
 
+    this._maxCols = 4
+    this._maxRows = 4
     this._cols = cols
     this._rows = rows
     this._highScores = new HighScores('MemoryHighScores')
     this._playerName = 'testNamn!!'
+    this._mainDropDownActive = false
+    this._sizeDropDownActive = false
 
     this._isFocused = true
 
@@ -19,9 +23,9 @@ class Memory extends window.HTMLElement {
     this._time = 0
     this._dec = 2
 
-    this._tileSize = 100
+    this._tileSize = 60
     this._spacer = this._tileSize * 0.1
-    this._infoAreaSize = 35 * this._rows
+    this._infoAreaSize = 35 * this._maxRows
 
     this.attachShadow({ mode: 'open' })
 
@@ -35,6 +39,7 @@ class Memory extends window.HTMLElement {
     this._templateDiv = this.shadowRoot.querySelectorAll('#memoryContainer template')[0]
       .content.firstElementChild
     this._restartButton = this.shadowRoot.querySelector('#restartButton')
+    this._mainContainer = this.shadowRoot.querySelector('#mainContainer')
 
     this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
       .content.cloneNode(true)
@@ -50,17 +55,103 @@ class Memory extends window.HTMLElement {
     this._setupNewGame(this._rows, this._cols)
     this._setupMemoryListeners()
 
-    this._containerHeader.querySelector('.dropdown').addEventListener('click', event => {
-      this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
-    })
+    // this._containerHeader.querySelector('.dropdown').addEventListener('click', event => {
+    //   this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
+    // })
 
-    this._containerHeader.querySelector('#dropdown-size').addEventListener('click', event => {
-      this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'inline-block'
-    })
+    // this._containerHeader.querySelector('.dropdown').addEventListener('click', this._dropDownClick.bind(this))
 
-    this._restartButton.addEventListener('click', e => {
-      this._setupNewGame(this._rows, this._cols)
-    })
+    // this._containerHeader.querySelector('#dropdown-size').addEventListener('click', event => {
+    //  this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'inline-block'
+    //  this._containerHeader.addEventListener('click', this._dropDownClick.bind(this))
+    // })
+    this._containerHeader.addEventListener('click', this._dropDownClick.bind(this))
+    this._mainContainer.addEventListener('click', this._mainContainerClick.bind(this))
+
+    // this._restartButton.addEventListener('click', e => {
+    //   this._setupNewGame(this._rows, this._cols)
+    // })
+  }
+
+  _mainContainerClick (event) {
+    switch (event.target) {
+      case this._restartButton:
+        this._setupNewGame(this._rows, this._cols)
+        break
+      default:
+        if (this._mainDropDownActive) {
+          this._closeDropDown()
+        }
+        break
+    }
+  }
+
+  _dropDownClick (event) {
+    // if (!this._mainDropDownActive) {
+    // this._mainDropDownActive = true
+    // this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
+    // } else if (!this._sizeDropDownActive) {
+    // this._sizeDropDownActive = true
+    // this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'inline-block'
+    // } else {
+    console.log(event.target)
+    switch (event.target) {
+      case this._containerHeader.querySelector('#configure'):
+        if (!this._mainDropDownActive) {
+          this._mainDropDownActive = true
+          this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
+        } else {
+          this._closeDropDown()
+        }
+        break
+      case this._containerHeader.querySelector('#gameSize'):
+        if (!this._sizeDropDownActive) {
+          this._sizeDropDownActive = true
+          this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'inline-block'
+        } else {
+          this._sizeDropDownActive = false
+          this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'none'
+        }
+        break
+      case this._containerHeader.querySelector('#twox2'):
+        this._clearActiveDropdownElements()
+        this._containerHeader.querySelector('#twox2').classList.add('elementActive')
+        this._closeDropDown(2)
+        this._setupNewGame(2, 2)
+        break
+      case this._containerHeader.querySelector('#twox4'):
+        this._clearActiveDropdownElements()
+        this._containerHeader.querySelector('#twox4').classList.add('elementActive')
+        this._closeDropDown()
+        this._setupNewGame(2, 4)
+        break
+      case this._containerHeader.querySelector('#fourx2'):
+        this._clearActiveDropdownElements()
+        this._containerHeader.querySelector('#fourx2').classList.add('elementActive')
+        this._closeDropDown()
+        this._setupNewGame(4, 2)
+        break
+      case this._containerHeader.querySelector('#fourx4'):
+        this._clearActiveDropdownElements()
+        this._containerHeader.querySelector('#fourx4').classList.add('elementActive')
+        this._closeDropDown()
+        this._setupNewGame(4, 4)
+        break
+    }
+  }
+
+  _clearActiveDropdownElements () {
+    this._containerHeader.querySelector('#twox2').classList.remove('elementActive')
+    this._containerHeader.querySelector('#twox4').classList.remove('elementActive')
+    this._containerHeader.querySelector('#fourx2').classList.remove('elementActive')
+    this._containerHeader.querySelector('#fourx4').classList.remove('elementActive')
+  }
+
+  _closeDropDown () {
+    this._mainDropDownActive = false
+    this._sizeDropDownActive = false
+    this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'none'
+    this._containerHeader.querySelector('.dropdown-content').style.display = 'none'
   }
 
   _setupMemoryListeners () {
@@ -78,6 +169,14 @@ class Memory extends window.HTMLElement {
   _setupNewGame (rows, cols) {
     this._clearContainer()
     clearInterval(this._intervalID)
+
+    if (!this._container.classList.contains('memContainer')) {
+      this._container.classList.add('memContainer')
+      this._container.classList.remove('highContainer')
+    }
+
+    this._mainDropDownActive = false
+    this._sizeDropDownActive = false
 
     this._a = null
     this._tiles = []
@@ -106,6 +205,8 @@ class Memory extends window.HTMLElement {
     })
 
     this._container.appendChild(this._div)
+
+    this._timeArea.textContent = `Time:  0 s`
 
     this._setupMemoryListeners()
   }
@@ -177,6 +278,8 @@ class Memory extends window.HTMLElement {
   _showHighScores () {
     // Clear the memoryContainer and populate with high-score-template
     this._clearContainer()
+    this._container.classList.remove('memContainer')
+    this._container.classList.add('highContainer')
     this._container.appendChild(this._highScoreTemplate)
 
     // Set up the high scores
@@ -228,11 +331,11 @@ class Memory extends window.HTMLElement {
   }
 
   getWidthRequired () {
-    return (this._tileSize + this._spacer) * (this._cols > this._rows ? this._cols : this._rows)
+    return (this._tileSize + this._spacer) * this._maxCols
   }
 
   getHeightRequired () {
-    return (this._tileSize + this._spacer) * (this._cols > this._rows ? this._cols : this._rows) + this._infoAreaSize
+    return (this._tileSize + this._spacer) * this._maxRows + this._infoAreaSize
   }
 
   _startTimer () {
