@@ -10,26 +10,29 @@ class UserNameView extends window.HTMLElement {
     this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
 
     this._containerHeader = null
+    this._username = ''
     this._container = this.shadowRoot.querySelector('#container')
-    this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
-      .content.cloneNode(true)
+    // this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
+    // .content.cloneNode(true)
     this._usernameInput = this.shadowRoot.querySelector('#usernameInput')
     this._inputButton = this.shadowRoot.querySelector('#inputButton')
+    this._inputButton.disabled = true
 
     this._isFocused = true
 
     this._userName = ''
 
-    this._width = 200
-    this._height = 200
+    this._width = 150
+    this._height = 100
   }
 
   connectedCallback () {
+    this._usernameInput.focus()
     this._container.addEventListener('click', e => {
       console.log('you clicked')
     })
-    this._usernameInput.addEventListener('keydown', e => {
-      if (this._usernameInput.value !== '') {
+    this._usernameInput.addEventListener('input', e => {
+      if (this._usernameInput.value.length > 0) {
         if (this._inputButton.disabled) {
           this._inputButton.classList.remove('disabled')
           this._inputButton.classList.add('enabled')

@@ -18,16 +18,29 @@ cssTemplate.innerHTML = /* html */ `
     margin:0;
     width:100%;
   }
+
+  #text{
+    position:absolute;
+    width: 100%;
+    height:30%;
+    margin:0;
+    top:0;
+  }
+
   #usernameInput{
     position: absolute;
     width: 100%;
+    height:30%;
+    margin:0;
+    top:31%;
   }
 
   #inputButton{
     position: absolute;
-    top:20%;
-    height:10%;
     width: 100%;
+    height:30%;
+    margin:0;
+    bottom:0;
   }
 
   .disabled{

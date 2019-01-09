@@ -4,7 +4,7 @@ import SubWindow from '../../pwindow/sub-window.js'
 import ChannelView from './channelView/channel-view.js'
 import Dragger from '../../utils/Dragger.js'
 import WindowHandler from '../../utils/WindowHandler.js'
-import UserNameView from './username-view/username-view.js'
+import UserNameView from '../../utils/usernameView/username-view.js'
 
 class ChatApp extends window.HTMLElement {
   constructor () {

@@ -6,7 +6,7 @@ import Memory from './apps/memory/memory-game.js'
 import LifeGame from './apps/life/life-game.js'
 import ChatApp from './apps/chat/chat-app.js'
 import ChannelView from './apps/chat/channelView/channel-view.js' // Flytta dessa?
-import UserNameView from './apps/chat/username-view/username-view.js' // Kanske flytta dessa?
+import UserNameView from './utils/usernameView/username-view.js' // Kanske flytta dessa?
 
 // Registering the custom elements here
 window.customElements.define('p-window', Pwindow)

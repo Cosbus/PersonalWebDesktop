@@ -2,7 +2,7 @@
 import Pwindow from './p-window.js'
 
 class SubWindow extends Pwindow {
-  constructor (windowContent) {
+  constructor (windowContent, header = true) {
     super()
 
     // Remove unused elements
@@ -14,11 +14,15 @@ class SubWindow extends Pwindow {
     // this._headerTemplate = headerTemplate
     this._workSpace = this._container.querySelector('#workSpace')
 
-    this._workSpace.classList.add('workSpaceSubWindow')
     this._workSpace.appendChild(this._content)
     // this._containerHeader.appendChild(this._headerTemplate)
-    this._content.setContainerHeader(this._containerHeader)
-
+    if (header) {
+      this._workSpace.classList.add('workSpaceSubWindow')
+      this._content.setContainerHeader(this._containerHeader)
+    } else {
+      this._containerHeader.remove()
+      this._content.classList.add('workSpaceSubWindowHeaderLess')
+    }
     this._closeWindowEvent = null
   }
 

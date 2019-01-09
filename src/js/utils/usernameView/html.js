@@ -2,9 +2,9 @@ const htmlTemplate = document.createElement('template')
 htmlTemplate.innerHTML = /* html */ `
  <link type="text/css" rel="stylesheet" href="/css.js" />
  <div id="container">
-  <div>Please give your username</div>
+  <div id="text">Give username:</div>
   <input id="usernameInput"></div>
-  <button id="inputButton" disabled class="disabled"></div>
+  <button id="inputButton" disabled class="disabled">Use</button>
  </div> 
  
 <template id="headerTemplate">

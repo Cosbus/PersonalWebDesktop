@@ -2,9 +2,13 @@ import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
 import Tile from './Tile.js'
 import HighScores from '../../utils/HighScores.js'
+import UserNameView from '../../utils/usernameView/username-view.js'
+import SubWindow from '../../pwindow/sub-window.js'
+import WindowHandler from '../../utils/WindowHandler.js'
+import Dragger from '../../utils/Dragger.js'
 
 class Memory extends window.HTMLElement {
-  constructor (rows = 2, cols = 2) {
+  constructor (rows = 2, cols = 2, playername = 'Noname') {
     super()
 
     this._maxCols = 4
@@ -12,9 +16,10 @@ class Memory extends window.HTMLElement {
     this._cols = cols
     this._rows = rows
     this._highScores = new HighScores('MemoryHighScores')
-    this._playerName = 'testNamn!!'
+    this._playerName = playername
     this._mainDropDownActive = false
     this._sizeDropDownActive = false
+    this._firstStart = true
 
     this._isFocused = true
 
@@ -36,10 +41,14 @@ class Memory extends window.HTMLElement {
     this._infoArea = this.shadowRoot.querySelector('#infoArea')
     this._triesArea = this.shadowRoot.querySelector('#triesArea')
     this._timeArea = this.shadowRoot.querySelector('#timeArea')
+    this._playerNameArea = this.shadowRoot.querySelector('#playerNameArea')
     this._templateDiv = this.shadowRoot.querySelectorAll('#memoryContainer template')[0]
       .content.firstElementChild
     this._restartButton = this.shadowRoot.querySelector('#restartButton')
     this._mainContainer = this.shadowRoot.querySelector('#mainContainer')
+
+    this._windowHandler = new WindowHandler(this._mainContainer)
+    this._dragger = new Dragger(this._mainContainer, this._windowHandler)
 
     this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
       .content.cloneNode(true)
@@ -76,6 +85,9 @@ class Memory extends window.HTMLElement {
   _mainContainerClick (event) {
     switch (event.target) {
       case this._restartButton:
+        if (this._firstStart) {
+          this._firstStart = false
+        }
         this._setupNewGame(this._rows, this._cols)
         break
       default:
@@ -137,6 +149,15 @@ class Memory extends window.HTMLElement {
         this._closeDropDown()
         this._setupNewGame(4, 4)
         break
+      case this._containerHeader.querySelector('#dropdown-name'):
+        this._closeDropDown()
+        let userNameView = new UserNameView()
+        let userNameWindow = new SubWindow(userNameView, false)
+        this._windowHandler.addWindow(userNameWindow, userNameView.getWidthRequired(),
+          userNameView.getHeightRequired())
+        this._dragger.startListening()
+
+        this._subWindowOpen = true
     }
   }
 
@@ -167,17 +188,25 @@ class Memory extends window.HTMLElement {
   }
 
   _setupNewGame (rows, cols) {
-    this._clearContainer()
-    clearInterval(this._intervalID)
+    // this._clearAll()
+    this._intervalID = null
 
     if (!this._container.classList.contains('memContainer')) {
       this._container.classList.add('memContainer')
       this._container.classList.remove('highContainer')
     }
 
-    this._mainDropDownActive = false
-    this._sizeDropDownActive = false
-
+    if (!this._firstStart) {
+      this._clearContainer(this._container)
+      this._clearContainer(this._div)
+      clearInterval(this._intervalID)
+      this._mainDropDownActive = false
+      this._sizeDropDownActive = false
+      this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
+        .content.cloneNode(true)
+      this._highScoreTemplate = this.shadowRoot.querySelector('#highscoreTemplate')
+        .content.cloneNode(true)
+    }
     this._a = null
     this._tiles = []
     this._firstTurnedTile = null
@@ -188,9 +217,6 @@ class Memory extends window.HTMLElement {
     this._tries = 0
     this._firstClick = true
     this._time = 0
-    this._infoAreaSize = 35 * this._rows
-
-    this._div = document.importNode(this._templateDiv, false)
 
     this._tiles = this.getPictureArray(this._cols, this._rows)
     this._tiles.forEach((tile, index) => {
@@ -207,19 +233,27 @@ class Memory extends window.HTMLElement {
     this._container.appendChild(this._div)
 
     this._timeArea.textContent = `Time:  0 s`
+    this._playerNameArea.textContent = 'Name: ' + this._playerName
 
     this._setupMemoryListeners()
   }
 
-  _clearContainer () {
-    while (this._container.firstChild) {
-      this._container.removeChild(this._container.firstChild)
+  _clearContainer (container) {
+    while (container.firstChild) {
+      container.removeChild(container.firstChild)
+    }
+  }
+
+  _clearAll () {
+    while (this.shadowRoot.firstChild) {
+      this.shadowRoot.removeChild(this.shadowRoot.firstChild)
     }
   }
 
   turnBrick (tile) {
     if (this._firstClick) {
       this._startTimer()
+      this._firstClick = false
     }
     if (this._secondTurnedTile) {
       return
@@ -249,8 +283,10 @@ class Memory extends window.HTMLElement {
 
         // Finished game
         if (this._pairs === (this._cols * this._rows) / 2) {
-          clearInterval(this._intervalID)
           this._showHighScores()
+
+          console.log('this._intervalID i finsihed game: ', this._intervalID)
+          clearInterval(this._intervalID)
         }
 
         window.setTimeout(() => {
@@ -277,10 +313,11 @@ class Memory extends window.HTMLElement {
 
   _showHighScores () {
     // Clear the memoryContainer and populate with high-score-template
-    this._clearContainer()
+    this._clearContainer(this._container)
     this._container.classList.remove('memContainer')
     this._container.classList.add('highContainer')
     this._container.appendChild(this._highScoreTemplate)
+    console.log(this._highScoreTemplate)
 
     // Set up the high scores
     this._highScores.setHighScores(this._playerName, this._cropTime(this._time, this._dec), this._tries)
@@ -320,13 +357,14 @@ class Memory extends window.HTMLElement {
       arr.push(new Tile(i))
     }
 
-    for (let i = this._tiles.length - 1; i > 0; i--) {
+    for (let i = arr.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1))
       let temp = arr[i]
       arr[i] = arr[j]
       arr[j] = temp
     }
 
+    console.log(arr)
     return arr
   }
 
@@ -346,6 +384,7 @@ class Memory extends window.HTMLElement {
       this._time += (this._updateTime / 1000)
       this._timeArea.textContent = `Time: ${this._cropTime(this._time, this._dec)} s`
     }, this._updateTime)
+    console.log('this._intervalID i func: ', this._intervalID)
   }
 
   getHeaderTemplate () {
