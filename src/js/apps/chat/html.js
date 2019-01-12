@@ -4,8 +4,14 @@ htmlTemplate.innerHTML = /* html */ `
  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 <div id="chatContainer">
-  <div id="infoArea">
-    <button id="channelButton">Channel +</button>
+  <div id="channelArea">
+    <div id="topChannelArea">
+      <button id="channelButton">Add channel</button>
+      <button id="clearChannelsButton">Clear all channels</button>
+    </div>
+    <div id="bottomChannelArea" class="scrollerOff">
+      
+    </div>
   </div>
   <div id="chatArea">
     <div id="chatHeader">
@@ -36,12 +42,16 @@ htmlTemplate.innerHTML = /* html */ `
 
 <template id="headerTemplate">
   <div class="dropdown">
-    <span>Configure</span>
+    <span id="configure">Configure</span>
     <div class="dropdown-content">
-      <p id="dropdown-about" class="dropdown-element">About</p>
-      <p id="dropdown-name" class="dropdown-element"></p>
+      <p id="dropdown-name" class="dropdown-element">User name</p>
     </div>
   </div>
+</template>
+
+<template id="channelsTemplate">
+  <h4>Channel</h4>
+  <div id="channelName"></div>
 </template>
 
 `

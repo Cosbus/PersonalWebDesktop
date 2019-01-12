@@ -46,15 +46,6 @@ cssTemplate.innerHTML = /* html */ `
     bottom:0;
   }
 
-  .workSpaceSubWindowHeaderLess {
-    
-    position: absolute;
-    height:100%;
-    width: 100%;
-    bottom:0;
-    top:0;
-  }
-
   .subWindow {
     border-radius:2.5%;
     -webkit-box-shadow: 10px 10px 30px -6px rgba(0,0,0,0.75);

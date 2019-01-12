@@ -2,7 +2,7 @@ import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
 import Tile from './Tile.js'
 import HighScores from '../../utils/HighScores.js'
-import UserNameView from '../../utils/usernameView/username-view.js'
+import InputView from '../../utils/inputView/input-view.js'
 import SubWindow from '../../pwindow/sub-window.js'
 import WindowHandler from '../../utils/WindowHandler.js'
 import Dragger from '../../utils/Dragger.js'
@@ -76,6 +76,9 @@ class Memory extends window.HTMLElement {
     // })
     this._containerHeader.addEventListener('click', this._dropDownClick.bind(this))
     this._mainContainer.addEventListener('click', this._mainContainerClick.bind(this))
+    this._mainContainer.addEventListener('windowRemoved', e => {
+      this._userNameWindowOpen = false
+    })
 
     // this._restartButton.addEventListener('click', e => {
     //   this._setupNewGame(this._rows, this._cols)
@@ -85,9 +88,6 @@ class Memory extends window.HTMLElement {
   _mainContainerClick (event) {
     switch (event.target) {
       case this._restartButton:
-        if (this._firstStart) {
-          this._firstStart = false
-        }
         this._setupNewGame(this._rows, this._cols)
         break
       default:
@@ -128,7 +128,7 @@ class Memory extends window.HTMLElement {
       case this._containerHeader.querySelector('#twox2'):
         this._clearActiveDropdownElements()
         this._containerHeader.querySelector('#twox2').classList.add('elementActive')
-        this._closeDropDown(2)
+        this._closeDropDown()
         this._setupNewGame(2, 2)
         break
       case this._containerHeader.querySelector('#twox4'):
@@ -151,13 +151,18 @@ class Memory extends window.HTMLElement {
         break
       case this._containerHeader.querySelector('#dropdown-name'):
         this._closeDropDown()
-        let userNameView = new UserNameView()
-        let userNameWindow = new SubWindow(userNameView, false)
-        this._windowHandler.addWindow(userNameWindow, userNameView.getWidthRequired(),
-          userNameView.getHeightRequired())
-        this._dragger.startListening()
-
-        this._subWindowOpen = true
+        if (!this._userNameWindowOpen) {
+          let userNameView = new InputView('username')
+          let userNameWindow = new SubWindow(userNameView, false)
+          this._windowHandler.addWindow(userNameWindow, userNameView.getWidthRequired(),
+            userNameView.getHeightRequired())
+          this._dragger.startListening()
+          this._userNameWindowOpen = true
+          userNameView.addEventListener('changeInput', e => {
+            this._playerName = userNameView.getInput()
+            this._playerNameArea.textContent = 'Name: ' + this._playerName
+          })
+        }
     }
   }
 
@@ -190,6 +195,7 @@ class Memory extends window.HTMLElement {
   _setupNewGame (rows, cols) {
     // this._clearAll()
     this._intervalID = null
+    this._userNameWindowOpen = false
 
     if (!this._container.classList.contains('memContainer')) {
       this._container.classList.add('memContainer')
@@ -236,6 +242,7 @@ class Memory extends window.HTMLElement {
     this._playerNameArea.textContent = 'Name: ' + this._playerName
 
     this._setupMemoryListeners()
+    this._firstStart = false
   }
 
   _clearContainer (container) {
@@ -317,7 +324,6 @@ class Memory extends window.HTMLElement {
     this._container.classList.remove('memContainer')
     this._container.classList.add('highContainer')
     this._container.appendChild(this._highScoreTemplate)
-    console.log(this._highScoreTemplate)
 
     // Set up the high scores
     this._highScores.setHighScores(this._playerName, this._cropTime(this._time, this._dec), this._tries)
@@ -326,8 +332,6 @@ class Memory extends window.HTMLElement {
     let firstItem = this._container.querySelector('#item1')
     let collection = this._container.querySelector('#highScore')
 
-    console.log(firstItem)
-    console.log(this._highScores)
     // Then loop through the objects
     let objKeys = Object.keys(this._highScores.getHighScores())
     let objValues = Object.values(this._highScores.getHighScores())

@@ -27,7 +27,7 @@ cssTemplate.innerHTML = /* html */ `
     top:0;
   }
 
-  #usernameInput{
+  #inputField{
     position: absolute;
     width: 100%;
     height:30%;

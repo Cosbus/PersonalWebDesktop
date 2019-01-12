@@ -2,8 +2,8 @@ const htmlTemplate = document.createElement('template')
 htmlTemplate.innerHTML = /* html */ `
  <link type="text/css" rel="stylesheet" href="/css.js" />
  <div id="container">
-  <div id="text">Give username:</div>
-  <input id="usernameInput"></div>
+  <div id="inputText"></div>
+  <input id="inputField"></div>
   <button id="inputButton" disabled class="disabled">Use</button>
  </div> 
  

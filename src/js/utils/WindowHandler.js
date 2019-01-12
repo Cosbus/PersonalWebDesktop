@@ -10,6 +10,9 @@ class WindowHandler {
     this._nextWindowLeftOffset = 20
     this._headerSize = 20
     this._container = container
+
+    // Listeners for windoEvents
+    this._windowRemovedEvent = new window.CustomEvent('windowRemoved')
   }
 
   getHighestZindex () {
@@ -83,6 +86,7 @@ class WindowHandler {
     window.addEventListener('closeWindow', e => {
       let window = this.findWindowFromEvent(e)
       if (window !== null) {
+        this._container.dispatchEvent(this._windowRemovedEvent)
         this.removeWindow(window, e)
       }
     })
@@ -107,7 +111,6 @@ class WindowHandler {
 
   removeWindow (window, e) {
     this._windows.splice(this.getIndexOfWindow(window), 1)
-    console.log(e.detail)
     e.detail.remove()
   }
 }

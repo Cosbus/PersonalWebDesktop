@@ -1,8 +1,8 @@
 import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
 
-class UserNameView extends window.HTMLElement {
-  constructor () {
+class InputView extends window.HTMLElement {
+  constructor (inputTypeString) {
     super()
     this.attachShadow({ mode: 'open' })
 
@@ -10,29 +10,31 @@ class UserNameView extends window.HTMLElement {
     this.shadowRoot.appendChild(cssTemplate.content.cloneNode(true))
 
     this._containerHeader = null
-    this._username = ''
+    this._input = ''
     this._container = this.shadowRoot.querySelector('#container')
-    // this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
-    // .content.cloneNode(true)
-    this._usernameInput = this.shadowRoot.querySelector('#usernameInput')
+    this.shadowRoot.querySelector('#inputText').textContent = `Input ${inputTypeString}:`
+    this._inputField = this.shadowRoot.querySelector('#inputField')
     this._inputButton = this.shadowRoot.querySelector('#inputButton')
     this._inputButton.disabled = true
 
     this._isFocused = true
-
-    this._userName = ''
 
     this._width = 150
     this._height = 100
   }
 
   connectedCallback () {
-    this._usernameInput.focus()
-    this._container.addEventListener('click', e => {
-      console.log('you clicked')
+    this._inputField.focus()
+
+    this._closeViewEvent = new window.CustomEvent('closeView')
+    this._changeInputEvent = new window.CustomEvent('changeInput', { detail: this })
+    this._inputButton.addEventListener('click', e => {
+      this._input = this._inputField.value
+      this.dispatchEvent(this._changeInputEvent)
+      this.dispatchEvent(this._closeViewEvent)
     })
-    this._usernameInput.addEventListener('input', e => {
-      if (this._usernameInput.value.length > 0) {
+    this._inputField.addEventListener('input', e => {
+      if (this._inputField.value.length > 0) {
         if (this._inputButton.disabled) {
           this._inputButton.classList.remove('disabled')
           this._inputButton.classList.add('enabled')
@@ -46,10 +48,17 @@ class UserNameView extends window.HTMLElement {
         }
       }
     })
+    this._inputField.addEventListener('keydown', e => {
+      if ((!this._inputButton.disabled) && e.keyCode === 13) {
+        this._input = this._inputField.value
+        this.dispatchEvent(this._changeInputEvent)
+        this.dispatchEvent(this._closeViewEvent)
+      }
+    })
   }
 
-  getUserName () {
-    return this._userName
+  getInput () {
+    return this._input
   }
 
   setContainerHeader (header) {
@@ -74,4 +83,4 @@ class UserNameView extends window.HTMLElement {
   }
 }
 
-export default UserNameView
+export default InputView

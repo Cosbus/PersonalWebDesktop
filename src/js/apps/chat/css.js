@@ -13,7 +13,7 @@ cssTemplate.innerHTML = /* html */ `
   }
 
 
-#infoArea {
+#channelArea {
   width: 30%;
   height: 100%;
   left:0;
@@ -21,12 +21,48 @@ cssTemplate.innerHTML = /* html */ `
   top:0;
   position: absolute;
   border-right: solid black;
+  display: grid;
+  grid-template-rows: 1fr 5fr;
+
+}
+
+#topChannelArea{
+  grid-row: 1;
+  border-bottom: black solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+ }
+
+#topChannelArea button {
+  margin: 10px;
+}
+
+#bottomChannelArea{
+  grid-row:2;
+
+}
+
+#bottomChannelArea h4{
+  margin: 5px;
+}
+
+#bottomChannelArea div {
+  margin: 5px;
+}
+
+#bottomChannelArea div:hover{
+
+  background-color: #00BFFF;
+}
+
+#bottomChannelArea::first-line{
+  color: red;
+  font-weight: bold;
+  
 }
 
 #channelButton{
-  position: absolute;
-  top: 10px;
-  left: 10px;
 }
 
 #chatArea{
