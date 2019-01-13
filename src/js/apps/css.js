@@ -14,7 +14,16 @@ cssTemplate.innerHTML = /* html */ `
     border-radius: 12px;
     height:40px;
     width:40px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
   }
+
+  /*button img {
+    display: block;
+    height: 30px;  
+    width: 30px
+  }*/
 
   button:hover {
     background-color:  #4CAF50; /* Green */

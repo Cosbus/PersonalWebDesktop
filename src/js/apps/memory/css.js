@@ -34,18 +34,19 @@ cssTemplate.innerHTML = /* html */ `
 }
 
 .highContainer {
-  display: grid;
+  display: flex;
   align-items: center;
+  justify-content: center;
   
   height: 65%;
   left: 0;
   right: 0;
   top:0;
-  bottom: 0;
   margin: 0;
   padding:0;
   bottom: 30%;
 }
+
 
 #infoArea{
   height:35%;
@@ -70,12 +71,37 @@ cssTemplate.innerHTML = /* html */ `
   padding:0;  
 }
 
+#collectionTitle{
+  margin: auto;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+}
+
 .highscoreContainer {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 3fr 1fr 3fr;
   margin:0;
   padding:0;
 }
+
+#firstItem {
+  grid-column: 1;  
+  justify-self: center;
+}
+
+#secondItem {
+  grid-column: 2;
+  justify-self: center;
+}
+
+#thirdItem {
+  grid-column: 3;
+  justify-self: center;
+}
+
 
 
 </style>

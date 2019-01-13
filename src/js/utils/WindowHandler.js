@@ -4,8 +4,8 @@ class WindowHandler {
     this._windows = []
     this._highestZindex = 0
     this._activeWindow = null
-    this._firstWindowStartingTopPos = 20
-    this._firstWindowStartingLeftPos = 20
+    this._firstWindowStartingTopPos = 50
+    this._firstWindowStartingLeftPos = 50
     this._nextWindowTopOffset = 20
     this._nextWindowLeftOffset = 20
     this._headerSize = 20
@@ -49,6 +49,7 @@ class WindowHandler {
 
   setWindowIsFocused (window) {
     window.isFocused()
+    window.focus()
   }
 
   getActiveWindow () {

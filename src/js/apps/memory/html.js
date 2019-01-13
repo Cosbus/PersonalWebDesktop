@@ -17,22 +17,25 @@ htmlTemplate.innerHTML = /* html */ `
 </div>
 
 <template id="headerTemplate">
-  <div class="dropdown">
-    <span id="configure">Configure</span>
-    <div class="dropdown-content">
-      <br>
-      <div id="dropdown-size" class="dropdown-element">
-        <span id="gameSize">Game size</span>
-          <div class="dropdown-sub1-content"> 
-            <div id="twox2" class="dropdown-element">2x2</div>
-            <div id="twox4" class="dropdown-element">2x4</div>
-            <div id="fourx2" class="dropdown-element">4x2</div>
-            <div id="fourx4" class="dropdown-element">4x4</div>
-          </div>
+  <div class="headerContainer">
+    <img id="iconImg"  />
+    <div class="dropdown">
+      <span id="configure">Configure</span>
+      <div class="dropdown-content">
+        <br>
+        <div id="dropdown-size" class="dropdown-element">
+          <span id="gameSize">Game size</span>
+            <div class="dropdown-sub1-content"> 
+              <div id="twox2" class="dropdown-element">2x2</div>
+              <div id="twox4" class="dropdown-element">2x4</div>
+              <div id="fourx2" class="dropdown-element">4x2</div>
+              <div id="fourx4" class="dropdown-element">4x4</div>
+            </div>
+        </div>
+        <hr>
+        <div id="dropdown-name" class="dropdown-element">Player name</div>
+        <br>  
       </div>
-      <hr>
-      <div id="dropdown-name" class="dropdown-element">Player name</div>
-      <br>  
     </div>
   </div>
 </template>

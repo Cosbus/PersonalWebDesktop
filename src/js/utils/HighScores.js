@@ -24,6 +24,8 @@ export default class HighScores {
     this._storageName = storageName
     this._highScores = {}
     this._currentObj = {}
+    this._maxStore = 10
+    this._maxIterat = 20
   }
 
   /**
@@ -39,19 +41,19 @@ export default class HighScores {
     this._loadHighScores()
 
     // Add the current game object to the high scores
-    // Using "Tries" as key for the current object
-    let key = playerTries
-    this._highScores[key] = this._currentObj
+    // Using "Time" as key for the current object
 
+    let key = playerTotalTime
+    this._highScores[key] = this._currentObj
     // Retrieve the keys from the high scores
     let hsObjKeys = Object.keys(this._highScores)
 
-    // Only keep five high scores, use "iteration" to avoid infinite loop
+    // Only keep a certain amount of high scores, use "iteration" to avoid infinite loop
     let iteration = 0
-    while (hsObjKeys.length > 5 && iteration < 10) {
+    while (hsObjKeys.length > this._maxStore && iteration < this._maxIterat) {
       // Find the maximum time and remove that high score
-      let maxKey = Math.max(...hsObjKeys)
-      delete this._highScores[maxKey]
+      let maxKey = Math.max(...hsObjKeys).toFixed(2)
+      delete this._highScores[maxKey.toString()]
 
       // Update the variables
       iteration++
@@ -61,14 +63,17 @@ export default class HighScores {
     // Order the high scores from least amount of tries to most amount of tries
     // keep a temporary placeholder for scores
     let tempHS = {}
-    while (hsObjKeys.length > 0) {
+    let iterat = 0
+    while (hsObjKeys.length > 0 && iterat < this._maxIterat) {
       // Find the minimum value, place in placeholder and remove from highscores
-      let minKey = Math.min(...hsObjKeys)
+      let minKey = Math.min(...hsObjKeys).toFixed(2)
       tempHS[minKey] = this._highScores[minKey]
 
       // Delete and update values
       delete this._highScores[minKey]
       hsObjKeys = Object.keys(this._highScores)
+
+      iterat++
     }
 
     this._highScores = tempHS

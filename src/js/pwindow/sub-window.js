@@ -2,7 +2,7 @@
 import Pwindow from './p-window.js'
 
 class SubWindow extends Pwindow {
-  constructor (windowContent, header = true) {
+  constructor (windowContent, header = true, icon = 'none') {
     super()
 
     // Remove unused elements
@@ -19,6 +19,7 @@ class SubWindow extends Pwindow {
     // this._containerHeader.appendChild(this._headerTemplate)
     if (header) {
       this._content.setContainerHeader(this._containerHeader)
+      if (icon !== 'none') { this._content.setIcon(icon) }
     }
     this._closeWindowEvent = null
   }

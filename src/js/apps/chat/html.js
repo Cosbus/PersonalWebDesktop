@@ -41,10 +41,13 @@ htmlTemplate.innerHTML = /* html */ `
 </template>
 
 <template id="headerTemplate">
-  <div class="dropdown">
-    <span id="configure">Configure</span>
-    <div class="dropdown-content">
-      <p id="dropdown-name" class="dropdown-element">User name</p>
+  <div class="headerContainer">
+    <img id="iconImg"  />
+    <div class="dropdown">
+      <span id="configure">Configure</span>
+      <div class="dropdown-content">
+        <p id="dropdown-name" class="dropdown-element">User name</p>
+      </div>
     </div>
   </div>
 </template>

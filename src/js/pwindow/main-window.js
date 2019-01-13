@@ -47,7 +47,7 @@ class MainWindow extends Pwindow {
     this._container.addEventListener('click', e => {
       for (let application of this._applications) {
         if (e.target === application) {
-          this._windowHandler.addWindow(new SubWindow(application.getNewApplication()),
+          this._windowHandler.addWindow(new SubWindow(application.getNewApplication(), true, application.getIconURL()),
             application.getApplication(application.getNoOfApplicationInstances() - 1).getWidthRequired(),
             application.getApplication(application.getNoOfApplicationInstances() - 1).getHeightRequired() + this._headerSize)
           this._dragger.startListening()

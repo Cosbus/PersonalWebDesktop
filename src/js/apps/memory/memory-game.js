@@ -15,7 +15,7 @@ class Memory extends window.HTMLElement {
     this._maxRows = 4
     this._cols = cols
     this._rows = rows
-    this._highScores = new HighScores('MemoryHighScores')
+    this._highScoreStorageName = `MemoryHighScores${this._cols}${this._rows}`
     this._playerName = playername
     this._mainDropDownActive = false
     this._sizeDropDownActive = false
@@ -24,13 +24,14 @@ class Memory extends window.HTMLElement {
     this._isFocused = true
 
     this._intervalID = null
-    this._updateTime = 100
+    this._updateTime = 10
     this._time = 0
     this._dec = 2
 
     this._tileSize = 60
     this._spacer = this._tileSize * 0.1
     this._infoAreaSize = 35 * this._maxRows
+    this._icon = ''
 
     this.attachShadow({ mode: 'open' })
 
@@ -88,6 +89,9 @@ class Memory extends window.HTMLElement {
   _mainContainerClick (event) {
     switch (event.target) {
       case this._restartButton:
+        if (this._mainDropDownActive) {
+          this._closeDropDown()
+        }
         this._setupNewGame(this._rows, this._cols)
         break
       default:
@@ -106,7 +110,6 @@ class Memory extends window.HTMLElement {
     // this._sizeDropDownActive = true
     // this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'inline-block'
     // } else {
-    console.log(event.target)
     switch (event.target) {
       case this._containerHeader.querySelector('#configure'):
         if (!this._mainDropDownActive) {
@@ -223,6 +226,7 @@ class Memory extends window.HTMLElement {
     this._tries = 0
     this._firstClick = true
     this._time = 0
+    this._highScoreStorageName = `MemoryHighScores${this._cols}${this._rows}`
 
     this._tiles = this.getPictureArray(this._cols, this._rows)
     this._tiles.forEach((tile, index) => {
@@ -291,8 +295,6 @@ class Memory extends window.HTMLElement {
         // Finished game
         if (this._pairs === (this._cols * this._rows) / 2) {
           this._showHighScores()
-
-          console.log('this._intervalID i finsihed game: ', this._intervalID)
           clearInterval(this._intervalID)
         }
 
@@ -326,11 +328,15 @@ class Memory extends window.HTMLElement {
     this._container.appendChild(this._highScoreTemplate)
 
     // Set up the high scores
+    this._highScores = new HighScores(this._highScoreStorageName)
     this._highScores.setHighScores(this._playerName, this._cropTime(this._time, this._dec), this._tries)
 
     // First get the template for the list-item and clone it
     let firstItem = this._container.querySelector('#item1')
     let collection = this._container.querySelector('#highScore')
+
+    // Style the first row
+    this._container.querySelector('#item1').style.borderBottom = 'solid black'
 
     // Then loop through the objects
     let objKeys = Object.keys(this._highScores.getHighScores())
@@ -338,6 +344,7 @@ class Memory extends window.HTMLElement {
 
     for (let i = 0; i < objKeys.length; i++) {
       let item = firstItem.cloneNode(true)
+      item.style.borderBottom = 'none'
       item.querySelector('#firstItem').textContent = objValues[i].name
       item.querySelector('#secondItem').textContent = objValues[i].tries
       item.querySelector('#thirdItem').textContent = objValues[i].time
@@ -367,8 +374,6 @@ class Memory extends window.HTMLElement {
       arr[i] = arr[j]
       arr[j] = temp
     }
-
-    console.log(arr)
     return arr
   }
 
@@ -388,7 +393,6 @@ class Memory extends window.HTMLElement {
       this._time += (this._updateTime / 1000)
       this._timeArea.textContent = `Time: ${this._cropTime(this._time, this._dec)} s`
     }, this._updateTime)
-    console.log('this._intervalID i func: ', this._intervalID)
   }
 
   getHeaderTemplate () {
@@ -398,6 +402,10 @@ class Memory extends window.HTMLElement {
   setContainerHeader (header) {
     this._containerHeader = header
     this._containerHeader.appendChild(this._headerTemplate)
+  }
+  setIcon (icon) {
+    this._icon = icon
+    this._containerHeader.querySelector('#iconImg').src = icon
   }
 
   setFocusedTrue () {

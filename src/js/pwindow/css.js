@@ -16,11 +16,12 @@ cssTemplate.innerHTML = /* html */ `
     position: absolute;
     border: black;
     border-style: solid;
-    background: url("../image/Tarfala.svg") no-repeat center center fixed; 
+   /* background: url("../image/Tarfala.svg") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; 
+    background-size: cover; */
+    background-color: #8B4513;
     top: 0;
     left: 0;
     bottom: 0;
@@ -104,12 +105,29 @@ cssTemplate.innerHTML = /* html */ `
     background: red;
   }
 
+.headerContainer{
+
+}
+
+#iconImg {
+  position:absolute;
+  left:0px;
+  top:0px;
+  margin: 0;
+  bottom: 0px;
+  height:20px;
+  width:18px;
+  border-right: solid black;
+} 
   
+
 .dropdown {
   position: absolute;
-  padding-left: 10px;
+  padding-left: 3px;
   padding-right: 5px;
-  left: 0px;
+  left: 23px;
+  top: 0px;
+  bottom: 0px;
   color:#F8F8F8;
   display: inline-block;
 }

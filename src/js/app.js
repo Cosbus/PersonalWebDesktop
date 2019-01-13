@@ -20,9 +20,9 @@ window.customElements.define('input-view', InputView)
 let mainwin = new MainWindow()
 document.querySelector('body').appendChild(mainwin)
 
-let app1 = new AppContainer(Memory, 'none', 'memory', 2, 2)
-let app2 = new AppContainer(LifeGame, 'none', 'life')
-let app3 = new AppContainer(ChatApp, 'none', 'chat')
+let app1 = new AppContainer(Memory, '../image/MemoryIcon.svg', 'memory', 2, 2)
+let app2 = new AppContainer(LifeGame, '../image/LifeIcon.png', 'life')
+let app3 = new AppContainer(ChatApp, '../image/ChatIcon.svg', 'chat')
 mainwin.addApplication(app1)
 
 mainwin.addApplication(app2)

@@ -24,6 +24,7 @@ class ChatApp extends window.HTMLElement {
 
     this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
       .content.cloneNode(true)
+    this.icon = ''
 
     this._container = this.shadowRoot.querySelector('#chatContainer')
     this._chatContent = this.shadowRoot.querySelector('#chatContent')
@@ -137,7 +138,7 @@ class ChatApp extends window.HTMLElement {
 
     this._webSocket.close()
 
-    this._webSocket.removeEventListener(this._receiveMessage)
+    // this._webSocket.removeEventListener(this._receiveMessage)
   }
 
   _dropDownClick (event) {
@@ -344,6 +345,11 @@ class ChatApp extends window.HTMLElement {
   setContainerHeader (header) {
     this._containerHeader = header
     this._containerHeader.appendChild(this._headerTemplate)
+  }
+
+  setIcon (icon) {
+    this._icon = icon
+    this._containerHeader.querySelector('#iconImg').src = icon
   }
 
   setFocusedTrue () {

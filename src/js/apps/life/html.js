@@ -27,16 +27,19 @@ htmlTemplate.innerHTML = /* html */ `
     <button id="runButton"> Run Life! </button>
     <span id="lifeInfo">Iterations: 0</span>
     <button id="stopButton"> Stop </button>
-    <button id="snapshotButton"> Take snapshot! </button>
+    <button id="snapshotButton"> Download snapshot! </button>
   </div>
  </div>
 
  <template id= "headerTemplate">
-  <div class="dropdown">
-    <span>Configure</span>
-    <div class="dropdown-content">
-      <p id="dropdown-about" class="dropdown-element">About</p>
-      <p id="dropdown-name" class="dropdown-element"></p>
+  <div class="headerContainer">
+    <img id="iconImg"  />
+    <div class="dropdown">
+      <span>Configure</span>
+      <div class="dropdown-content">
+        <p id="dropdown-about" class="dropdown-element">About</p>
+        <p id="dropdown-name" class="dropdown-element"></p>
+      </div>
     </div>
   </div>
 </template>

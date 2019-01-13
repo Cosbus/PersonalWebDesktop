@@ -1,5 +1,9 @@
 import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
+import WindowHandler from '../../utils/WindowHandler.js'
+import Dragger from '../../utils/Dragger.js'
+import InputView from '../../utils/inputView/input-view.js'
+import SubWindow from '../../pwindow/sub-window.js'
 
 class LifeGame extends window.HTMLElement {
   constructor () {
@@ -14,8 +18,6 @@ class LifeGame extends window.HTMLElement {
     this._mainDiv = this.shadowRoot.querySelector('#mainDiv')
     this._configArea = this.shadowRoot.querySelector('#configArea')
     this._clearButton = this.shadowRoot.querySelector('#clearButton')
-    // this._rectangleButton = this.shadowRoot.querySelector('#rectangleButton')
-    // this._circleButton = this.shadowRoot.querySelector('#circleButton')
     this._drawShapeButton = this.shadowRoot.querySelector('#shapeButton')
     this._stepForwardButton = this.shadowRoot.querySelector('#stepButton')
     this._runButton = this.shadowRoot.querySelector('#runButton')
@@ -26,8 +28,9 @@ class LifeGame extends window.HTMLElement {
     this._lastXPos = 0
     this._lastYPos = 0
     this._ctx = this._canvas.getContext('2d')
-    //   this._ctx.lineWidth = 5
     this._ctx.strokeStyle = 'black'
+
+    // this._saveFileName = 'image.png'
 
     this._isFocused = true
 
@@ -38,11 +41,14 @@ class LifeGame extends window.HTMLElement {
     this._lifeInfo = this.shadowRoot.querySelector('#lifeInfo')
     this._updateTime = 100
 
+    this._windowHandler = new WindowHandler(this._mainDiv)
+    this._dragger = new Dragger(this._mainDiv, this._windowHandler)
     //= document.createElement('img')
 
     this._height = 400
     this._width = 450
     this._configAreaSize = 77
+    this._icon = ''
 
     this._containerHeader = null
 
@@ -85,7 +91,6 @@ class LifeGame extends window.HTMLElement {
     })
 
     this._containerHeader.querySelector('.dropdown').addEventListener('click', event => {
-      console.log('clicked dropdown')
       this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
     })
 
@@ -150,21 +155,25 @@ class LifeGame extends window.HTMLElement {
   }
 
   _drawRectangle () {
-    this._ctx.rect(100, 100, 100, 100)
+    this._ctx.rect(this._canvas.clientWidth / 4, this._canvas.clientHeight / 4, this._canvas.clientWidth / 2, this._canvas.clientHeight / 2)
     this._ctx.closePath()
     this._ctx.stroke()
   }
 
   _drawCircle () {
-    this._ctx.arc(100, 100, 50, 0, 2 * Math.PI)
+    this._ctx.arc(this._canvas.clientWidth / 2, this._canvas.clientHeight / 2, this._canvas.clientHeight / 4, 0, 2 * Math.PI)
     this._ctx.closePath()
     this._ctx.stroke()
   }
 
   _drawTriangle () {
-    this._ctx.moveTo(100, 100)
-    this._ctx.lineTo(100, 300)
-    this._ctx.lineTo(300, 300)
+    this._ctx.moveTo(this._canvas.clientWidth / 4, this._canvas.clientHeight / 4)
+    this._ctx.lineTo(this._canvas.clientWidth / 4, this._canvas.clientHeight * (3 / 4))
+    this._ctx.lineTo(this._canvas.clientWidth * (3 / 4), this._canvas.clientHeight * (3 / 4))
+
+    // this._ctx.moveTo(100, 100)
+    // this._ctx.lineTo(100, 300)
+    // this._ctx.lineTo(300, 300)
     this._ctx.closePath()
     this._ctx.stroke()
   }
@@ -300,16 +309,35 @@ class LifeGame extends window.HTMLElement {
     this._containerHeader.appendChild(this._headerTemplate)
   }
 
+  setIcon (icon) {
+    this._icon = icon
+    this._containerHeader.querySelector('#iconImg').src = icon
+  }
+
   _thisTakeSnapShot () {
     this._getPatternFromCanvas()
     this._snapShotURL = this._canvas.toDataURL('img/png')
-    console.log(this._snapShotURL)
     this._canvas.style.background = 'black'
     setTimeout(() => {
       this._canvas.style.background = 'rgba(168, 218, 220, 1.00)'
       this._clearCanvas()
       this._drawPatternOnCanvas()
     }, 100)
+
+    // Saving image
+    let fileNameView = new InputView('filename')
+    let fileNameWindow = new SubWindow(fileNameView, false)
+    this._windowHandler.addWindow(fileNameWindow, fileNameView.getWidthRequired(),
+      fileNameView.getHeightRequired())
+    this._dragger.startListening()
+    this._subWindowOpen = true
+    fileNameView.addEventListener('changeInput', e => {
+      let fileName = `${fileNameView.getInput()}.png`
+      let link = document.createElement('a')
+      link.download = fileName
+      link.href = this._snapShotURL.replace('image/png', 'image/octet-stream')
+      link.click()
+    })
 
     this.dispatchEvent(this._sendImageEvent)
   }
