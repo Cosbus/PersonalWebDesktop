@@ -4,6 +4,7 @@ import WindowHandler from '../../utils/WindowHandler.js'
 import Dragger from '../../utils/Dragger.js'
 import InputView from '../../utils/inputView/input-view.js'
 import SubWindow from '../../pwindow/sub-window.js'
+import InfoView from '../../utils/infoView/info-view.js'
 
 class LifeGame extends window.HTMLElement {
   constructor () {
@@ -43,7 +44,6 @@ class LifeGame extends window.HTMLElement {
 
     this._windowHandler = new WindowHandler(this._mainDiv)
     this._dragger = new Dragger(this._mainDiv, this._windowHandler)
-    //= document.createElement('img')
 
     this._height = 400
     this._width = 450
@@ -51,6 +51,8 @@ class LifeGame extends window.HTMLElement {
     this._icon = ''
 
     this._containerHeader = null
+    this._mainDropDownActive = false
+    this._aboutWindowOpen = true
 
     this._headerTemplate = this.shadowRoot.querySelector('#headerTemplate')
       .content.cloneNode(true)
@@ -64,6 +66,9 @@ class LifeGame extends window.HTMLElement {
     this._canvas.addEventListener('mousemove', this._performDraw.bind(this))
     this._canvas.addEventListener('mouseleave', this._endDraw.bind(this))
     this._configArea.addEventListener('click', e => {
+      if (this._mainDropDownActive) {
+        this._closeDropDown()
+      }
       switch (e.target) {
         case this._clearButton:
           this._noIterations = 0
@@ -90,14 +95,57 @@ class LifeGame extends window.HTMLElement {
       }
     })
 
-    this._containerHeader.querySelector('.dropdown').addEventListener('click', event => {
-      this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
+    this._containerHeader.addEventListener('click', event => {
+      switch (event.target) {
+        case this._containerHeader.querySelector('#configure'):
+          if (!this._mainDropDownActive) {
+            this._mainDropDownActive = true
+            this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
+          } else {
+            this._closeDropDown()
+          }
+          break
+        case this._containerHeader.querySelector('#dropdown-about'):
+          this._openAboutWindow()
+          this._closeDropDown()
+          break
+        default:
+          this._closeDropDown()
+          break
+      }
     })
 
     this._sendImageEvent = new window.CustomEvent('sentimage', { detail: this._snapShotURL })
   }
 
+  _closeDropDown () {
+    this._mainDropDownActive = false
+    this._containerHeader.querySelector('.dropdown-content').style.display = 'none'
+  }
+
+  _openAboutWindow () {
+    let aboutView = new InfoView('About "Conways game of life"', '"Conways game of life" is a game which is fully determined' +
+    ' by the initial state of the game. Originally devised by the British mathematician John Horton' +
+    ' in 1970 it shows how an emerging complexity may arise from a simple set of rules. The game' +
+    ' takes place on a two-dimensional grid of square cells where every cell can be in a state of' +
+    ' life or death. Depending on the state of the 8 surrounding cells the cell then either continues to live' +
+    ' or dies off. A dead cell may be repopulated depending on its surrounding cells. The rules used here are:\n\n' +
+    '1. A live cell having less than 2 live neighbours die.\n' +
+    '2. A live cell with 2 or 3 neighbours live on. \n' +
+    '3. A live cell with more than 3 live neighbours die. \n' +
+    '4. A dead cell with exactly 3 live neighbours becomes alive.')
+    let aboutWindow = new SubWindow(aboutView, false)
+    this._windowHandler.addWindow(aboutWindow, aboutView.getWidthRequired(),
+      aboutView.getHeightRequired())
+    this._dragger.startListening()
+    this._aboutWindowOpen = true
+    aboutView.addEventListener('closeView', e => {
+      this._aboutWindowOpen = false
+    })
+  }
+
   _startDraw (event) {
+    this._closeDropDown()
     this._mousePressed = true
 
     this._draw(event.pageX - this._canvas.getBoundingClientRect().x,

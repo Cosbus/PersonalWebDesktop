@@ -7,7 +7,7 @@ htmlTemplate.innerHTML = /* html */ `
   <button id="inputButton" disabled class="disabled">Use</button>
  </div> 
  
-<template id="headerTemplate">
+<!--<template id="headerTemplate">
 <div class="dropdown">
   <span>Configure</span>
   <div class="dropdown-content">
@@ -15,7 +15,7 @@ htmlTemplate.innerHTML = /* html */ `
     <p id="dropdown-name" class="dropdown-element"></p>
   </div>
 </div>
-</template>
+</template>!-->
  `
 
 export default htmlTemplate
