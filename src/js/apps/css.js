@@ -26,7 +26,7 @@ cssTemplate.innerHTML = /* html */ `
   }*/
 
   button:hover {
-    background-color:  #4CAF50; /* Green */
+    background-color:  #529191; /* Green */
     color: white;
   }
 </style>

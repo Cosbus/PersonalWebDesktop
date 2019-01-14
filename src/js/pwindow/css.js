@@ -16,12 +16,12 @@ cssTemplate.innerHTML = /* html */ `
     position: absolute;
     border: black;
     border-style: solid;
-   /* background: url("../image/Tarfala.svg") no-repeat center center fixed; 
+    background: url("../image/BackImage.jpg") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover; */
-    background-color: #8B4513;
+    background-size: cover;
+    background-color: #c3b6c4;
     top: 0;
     left: 0;
     bottom: 0;
@@ -53,12 +53,14 @@ cssTemplate.innerHTML = /* html */ `
     -moz-box-shadow: 10px 10px 30px -6px rgba(0,0,0,0.75);
     box-shadow: 10px 10px 30px -6px rgba(0,0,0,0.75);
     overflow: hidden;
-    background-color: rgba(168, 218, 220, 1.00);
+    /*background-color: #bcbb8d;
+    background-color: #483D8B;*/
+    
+    background-color: #B2E1E1;
   }
 
   .subWindow:active {
     
-    background-color: rgba(168, 218, 220, 1.00);
   }
 
   .subWindow:hover {
@@ -69,8 +71,8 @@ cssTemplate.innerHTML = /* html */ `
   .defaultSetting {
     
     border-style: solid;
-    
-    background-color: rgba(168, 218, 220, 1.00);
+    background-color: #B2E1E1;
+    /*background-color: rgba(168, 218, 220, 1.00);*/
     position: absolute;
     
   }
@@ -111,13 +113,13 @@ cssTemplate.innerHTML = /* html */ `
 
 #iconImg {
   position:absolute;
-  left:0px;
+  left:5px;
   top:0px;
   margin: 0;
+  padding-right:2px;
   bottom: 0px;
   height:20px;
   width:18px;
-  border-right: solid black;
 } 
   
 
@@ -125,7 +127,9 @@ cssTemplate.innerHTML = /* html */ `
   position: absolute;
   padding-left: 3px;
   padding-right: 5px;
-  left: 23px;
+  
+  border-left: solid black;
+  left: 27px;
   top: 0px;
   bottom: 0px;
   color:#F8F8F8;
@@ -182,8 +186,7 @@ cssTemplate.innerHTML = /* html */ `
     left: 0;
     width: 30px;
     height: 30px;
-    background: aqua;
-    border: 1px solid blue;
+    background-color: #B2E1E1;
     
   }
 

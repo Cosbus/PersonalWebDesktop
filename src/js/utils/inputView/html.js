@@ -3,7 +3,7 @@ htmlTemplate.innerHTML = /* html */ `
  <link type="text/css" rel="stylesheet" href="/css.js" />
  <div id="container">
   <div id="inputText"></div>
-  <input id="inputField"></div>
+  <input id="inputField">
   <button id="inputButton" disabled class="disabled">Use</button>
  </div> 
  

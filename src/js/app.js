@@ -23,7 +23,7 @@ let mainwin = new MainWindow()
 document.querySelector('body').appendChild(mainwin)
 
 let app1 = new AppContainer(Memory, '../image/MemoryIcon.svg', 'memory', 2, 2)
-let app2 = new AppContainer(LifeGame, '../image/LifeIcon.png', 'life')
+let app2 = new AppContainer(LifeGame, '../image/LifeIcon.svg', 'life')
 let app3 = new AppContainer(ChatApp, '../image/ChatIcon.svg', 'chat')
 mainwin.addApplication(app1)
 

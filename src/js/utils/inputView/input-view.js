@@ -20,7 +20,7 @@ class InputView extends window.HTMLElement {
     this._isFocused = true
 
     this._width = 150
-    this._height = 100
+    this._height = 150
   }
 
   connectedCallback () {

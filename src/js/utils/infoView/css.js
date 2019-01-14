@@ -23,13 +23,18 @@ cssTemplate.innerHTML = /* html */ `
 
   #titleText{
     grid-row: 1;
+    padding-top: 10px;
     justify-self: center;
+    
     
   }
 
   #mainText{
     grid-row: 2;
-    padding: 2px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    background-color: #B2E1E1;
   }
 
   <div id="container">

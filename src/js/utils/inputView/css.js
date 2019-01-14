@@ -13,42 +13,59 @@ cssTemplate.innerHTML = /* html */ `
   }
 
   #container{
-    position:absolute;
-    height:100%;
-    margin:0;
-    width:100%;
+    border: solid green;
+    height: 100%;
+    display: flex;
+    flex-direction:column;
+    justify-content: space-around;
+    align-items: center;
+    
   }
 
-  #text{
+  /*#text{
     position:absolute;
     width: 100%;
     height:30%;
     margin:0;
     top:0;
+  }*/
+
+  #text{
   }
 
   #inputField{
+    width: 75%;
+  }
+  /*#inputField{
     position: absolute;
     width: 100%;
     height:30%;
     margin:0;
     top:31%;
-  }
+  }*/ 
 
+  #inputButton{
+    width: 75%;
+   }
+  /*
   #inputButton{
     position: absolute;
     width: 100%;
     height:30%;
     margin:0;
     bottom:0;
-  }
+  }*/
 
   .disabled{
-    background-color: red;
+    background-color: #529191;
+    
+    color: white;
   }
 
   .enabled{
-    background-color: green;
+    background-color: #063b3b;
+    
+    color: white;
   }
 
 
