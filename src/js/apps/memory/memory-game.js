@@ -244,6 +244,7 @@ class Memory extends window.HTMLElement {
 
     this._timeArea.textContent = `Time:  0 s`
     this._playerNameArea.textContent = 'Name: ' + this._playerName
+    this._triesArea.textContent = 'Number of tries: 0'
 
     this._setupMemoryListeners()
     this._firstStart = false

@@ -60,6 +60,7 @@ class ChatApp extends window.HTMLElement {
     this._width = 500
 
     this._subWindowOpen = false
+    this._subWindow = ''
     this._windowHandler = new WindowHandler(this._container)
     this._dragger = new Dragger(this._container, this._windowHandler)
   }
@@ -211,7 +212,10 @@ class ChatApp extends window.HTMLElement {
   }
 
   _parseMessage (event) {
-    if (this._connected) {
+    if (JSON.parse(event.data).username === 'The Server' &&
+    JSON.parse(event.data).data === '') {
+      return
+    } else if (this._connected) {
       this._tempText = this._chatTextArea.value
       this._chatTextArea.remove()
       this._clientName.remove()
@@ -243,8 +247,16 @@ class ChatApp extends window.HTMLElement {
   }
 
   _openChannelWindow () {
+    if (this._subWindowOpen) {
+      return
+    }
     let channelView = new InputView('channel')
     let channelWindow = new SubWindow(channelView, false)
+    this._subWindowOpen = true
+    this._subWindow = channelWindow
+    channelWindow.addEventListener('closeWindow', e => {
+      this._subWindowOpen = false
+    })
     this._windowHandler.addWindow(channelWindow, channelView.getWidthRequired(),
       channelView.getHeightRequired())
     this._dragger.startListening()
@@ -277,8 +289,12 @@ class ChatApp extends window.HTMLElement {
     this._chatContent.appendChild(messageTemplate)
     this._chatTextArea.value = this._tempText
 
-    if (this._isFocused && !this._userNameWindowOpen) {
-      this._chatTextArea.focus()
+    if (this._isFocused) {
+      if (this._subWindowOpen) {
+        this._subWindow.focus()
+      } else {
+        this._chatTextArea.focus()
+      }
     }
     if (this._chatContent.scrollHeight > this._chatContent.clientHeight) { // Overflow
       this._chatContent.scroll(0, this._chatContent.scrollHeight - 10)
@@ -288,12 +304,19 @@ class ChatApp extends window.HTMLElement {
   }
 
   _openUserNameWindow () {
+    if (this._subWindowOpen) {
+      return
+    }
     let userNameView = new InputView('username')
     let userNameWindow = new SubWindow(userNameView, false)
+    userNameWindow.addEventListener('closeWindow', e => {
+      this._subWindowOpen = false
+    })
     this._windowHandler.addWindow(userNameWindow, userNameView.getWidthRequired(),
       userNameView.getHeightRequired())
     this._dragger.startListening()
     this._subWindowOpen = true
+    this._subWindow = userNameWindow
     userNameView.addEventListener('changeInput', e => {
       this._userName = userNameView.getInput()
       window.localStorage.setItem(this._localStorageForName, this._userName)
