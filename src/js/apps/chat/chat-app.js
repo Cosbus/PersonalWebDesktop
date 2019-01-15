@@ -1,3 +1,11 @@
+/**
+ * Module for ChatApp.
+ *
+ * @module src/js/apps/chat/chat-app.js
+ * @author Claes Weyde
+ * @version 1.0.0
+ */
+
 import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
 import SubWindow from '../../pwindow/sub-window.js'
@@ -5,7 +13,19 @@ import Dragger from '../../utils/Dragger.js'
 import WindowHandler from '../../utils/WindowHandler.js'
 import InputView from '../../utils/inputView/input-view.js'
 
+/**
+ * A class which handles a chat-app.
+ *
+ * @class ChatApp
+ * @extends window.HTMLElement
+ **/
 class ChatApp extends window.HTMLElement {
+  /**
+   * Creates an instance of ChatApp.
+   *
+   * @memberof ChatApp
+   * @constructor
+   */
   constructor () {
     super()
 
@@ -65,6 +85,11 @@ class ChatApp extends window.HTMLElement {
     this._dragger = new Dragger(this._container, this._windowHandler)
   }
 
+  /**
+   * A function which is called when the chat object is placed on the global window.
+   *
+   * @memberof ChatApp
+   */
   connectedCallback () {
     if (window.localStorage.getItem(this._localStorageForName)) {
       this._userName = window.localStorage.getItem(this._localStorageForName)
@@ -134,14 +159,24 @@ class ChatApp extends window.HTMLElement {
     this._webSocket.addEventListener('message', this._receiveMessage.bind(this))
   }
 
+  /**
+   * A function which is called when the chat object is removed from the global window.
+   *
+   * @memberof ChatApp
+   */
   disconnectedCallback () {
     window.localStorage.setItem(this._localStorageForChannels, JSON.stringify(this._channels))
 
     this._webSocket.close()
-
-    // this._webSocket.removeEventListener(this._receiveMessage)
   }
 
+  /**
+   * A function which is called when the drop-down menu is clicked.
+   *
+   * @param {event} event, the clicking event.
+   *
+   * @memberof ChatApp
+   */
   _dropDownClick (event) {
     switch (event.target) {
       case this._containerHeader.querySelector('#configure'):
@@ -164,11 +199,21 @@ class ChatApp extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which closed the drop-down menu.
+   *
+   * @memberof ChatApp
+   */
   _closeDropDown () {
     this._mainDropDownActive = false
     this._containerHeader.querySelector('.dropdown-content').style.display = 'none'
   }
 
+  /**
+   * A function which populates the channel area with channels and buttons.
+   *
+   * @memberof ChatApp
+   */
   _populateChannelsArea () {
     // remove any possible content
     this._clearContainer(this._bottomChannelArea)
@@ -177,7 +222,6 @@ class ChatApp extends window.HTMLElement {
     this._bottomChannelArea.appendChild(channelTemplate)
 
     let firstItem = this._bottomChannelArea.querySelector('#channelName')
-    // this._bottomChannelArea.appendChild(firstItem)
 
     for (let i = 0; i < this._channels.length; i++) {
       let item = firstItem.cloneNode(true)
@@ -197,12 +241,26 @@ class ChatApp extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which clears a given container from HTML-elements.
+   *
+   * @param {HTMLElement} container, the container to clear.
+   *
+   * @memberof ChatApp
+   */
   _clearContainer (container) {
     while (container.firstChild) {
       container.removeChild(container.firstChild)
     }
   }
 
+  /**
+   * A function handling the starting point of receiving messages from the server.
+   *
+   * @param {event} event, the message event.
+   *
+   * @memberof ChatApp
+   */
   _receiveMessage (event) {
     if (this._channel === 'Echo-channel') {
       this._parseMessage(event)
@@ -211,6 +269,13 @@ class ChatApp extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which parses the messages received.
+   *
+   * @param {event} event, the message event.
+   *
+   * @memberof ChatApp
+   */
   _parseMessage (event) {
     if (JSON.parse(event.data).username === 'The Server' &&
     JSON.parse(event.data).data === '') {
@@ -232,6 +297,13 @@ class ChatApp extends window.HTMLElement {
     this._repopulateUserTextArea(messageTemplate)
   }
 
+  /**
+   * A function which handles events in the chat-text-area (where the user writes messages)
+   *
+   * @param {event} event, the chat text event.
+   *
+   * @memberof ChatApp
+   */
   _chatTextAreaEvent (event) {
     if (event.keyCode === 13) {
       this._sendMessage(this._chatTextArea.value)
@@ -241,11 +313,21 @@ class ChatApp extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which fills the header of the informational area with pertinent information.
+   *
+   * @memberof ChatApp
+   */
   _populateHeaderInfo () {
     this._headerChannelP.textContent = 'Channel: ' + this._channel
     this._headerUserP.textContent = 'User: ' + this._userName
   }
 
+  /**
+   * A function which opens an inputView for change of channel.
+   *
+   * @memberof ChatApp
+   */
   _openChannelWindow () {
     if (this._subWindowOpen) {
       return
@@ -264,12 +346,24 @@ class ChatApp extends window.HTMLElement {
     channelView.addEventListener('changeInput', this._channelAdded.bind(this))
   }
 
+  /**
+   * A function which handles events when a new channel is added.
+   *
+   * @param {event} event, the event leading to the channel being added.
+   *
+   * @memberof ChatApp
+   */
   _channelAdded (event) {
     this._channel = event.detail.getInput()
     this._channels.push(this._channel)
     this._channelChanged()
   }
 
+  /**
+   * A function which handles the event of the user changing the channel.
+   *
+   * @memberof ChatApp
+   */
   _channelChanged () {
     this._populateChannelsArea()
     this._headerChannelP.textContent = 'Channel: ' + this._channel
@@ -282,6 +376,13 @@ class ChatApp extends window.HTMLElement {
     this._repopulateUserTextArea(messageTemplate)
   }
 
+  /**
+   * A function which populates the user text are.
+   *
+   * @param {HTMLElement} messageTemplate, a template containing the chat format and info.
+   *
+   * @memberof ChatApp
+   */
   _repopulateUserTextArea (messageTemplate) {
     this._clientName = messageTemplate.querySelectorAll('#clientName')[messageTemplate.querySelectorAll('#clientName').length - 1]
     this._clientName.textContent = this._userName + ': '
@@ -303,6 +404,11 @@ class ChatApp extends window.HTMLElement {
     this._chatTextArea.addEventListener('keydown', this._chatTextAreaEvent.bind(this))
   }
 
+  /**
+   * A function which opens a new inputView for the user to input a new name.
+   *
+   * @memberof ChatApp
+   */
   _openUserNameWindow () {
     if (this._subWindowOpen) {
       return
@@ -328,10 +434,22 @@ class ChatApp extends window.HTMLElement {
     this._subWindowOpen = true
   }
 
+  /**
+   * A function which initiates a new web socket.
+   *
+   * @memberof ChatApp
+   */
   _initWebSocket () {
     this._webSocket = new window.WebSocket(this._serverURL)
   }
 
+  /**
+   * A function which is called to send a message to the server.
+   *
+   * @param {String} message, the message to be sent.
+   *
+   * @memberof ChatApp
+   */
   _sendMessage (message) {
     let sendData = {
       'type': this._type,
@@ -343,42 +461,66 @@ class ChatApp extends window.HTMLElement {
     this._webSocket.send(JSON.stringify(sendData))
   }
 
-  importImageURL (imageURL) {
-    this._importImageURL = imageURL
-  }
-
-  pasteImage () {
-    let element = document.createElement('img')
-    element.src = this._importImageURL
-    this._testDiv.appendChild(element)
-  }
-
-  getImage () {
-    return this._importImage
-  }
-
+  /**
+   * A function which returns the width required for the Chat App window.
+   *
+   * @return {number} the required width in px.
+   *
+   * @memberof ChatApp
+   */
   getWidthRequired () {
     return this._width
   }
 
+  /**
+   * A function which returns the height required for the Chat App window.
+   *
+   * @return {number} the required height in px.
+   *
+   * @memberof ChatApp
+   */
   getHeightRequired () {
     return this._height
   }
 
+  /**
+   * A function which sets the header of the Chat App window.
+   *
+   * @param {HTMLElement} header, the header of the Chat App window.
+   *
+   * @memberof ChatApp
+   */
   setContainerHeader (header) {
     this._containerHeader = header
     this._containerHeader.appendChild(this._headerTemplate)
   }
 
+  /**
+   * A function which sets the icon URL of the Chat App window.
+   *
+   * @param {String} icon, the icon URL of the Chat App window.
+   *
+   * @memberof ChatApp
+   */
   setIcon (icon) {
     this._icon = icon
     this._containerHeader.querySelector('#iconImg').src = icon
   }
 
+  /**
+   * A function which sets the focus of the ChatApp window to true.
+   *
+   * @memberof ChatApp
+   */
   setFocusedTrue () {
     this._isFocused = true
   }
 
+  /**
+   * A function which sets the focus of the ChatApp window to false.
+   *
+   * @memberof ChatApp
+   */
   setFocusedFalse () {
     this._isFocused = false
   }

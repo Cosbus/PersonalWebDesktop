@@ -31,6 +31,10 @@ export default class HighScores {
   /**
    * Sets up the high scores
    *
+   * @param {string} playerName, the name of the player
+   * @param {number} playerTotalTime, the time the player played the game
+   * @param {number} playerTries, the number of tries the player used for the game
+   *
    * @memberof HighScores
    */
   setHighScores (playerName, playerTotalTime, playerTries) {
@@ -84,6 +88,7 @@ export default class HighScores {
    * {tries:{name:name, time:time, tries:tries},...}
    *
    * @return {{obj}} highScores
+   *
    * @memberof HighScores
    */
   getHighScores () {

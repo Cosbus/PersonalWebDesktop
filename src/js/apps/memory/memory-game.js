@@ -1,3 +1,11 @@
+/**
+ * Module for Memory.
+ *
+ * @module src/js/apps/memory/memory-game.js
+ * @author Claes Weyde
+ * @version 1.0.0
+ */
+
 import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
 import Tile from './Tile.js'
@@ -7,7 +15,23 @@ import SubWindow from '../../pwindow/sub-window.js'
 import WindowHandler from '../../utils/WindowHandler.js'
 import Dragger from '../../utils/Dragger.js'
 
+/**
+ * A class which handles a memory game.
+ *
+ * @class Memory
+ * @extends window.HTMLElement
+ **/
 class Memory extends window.HTMLElement {
+  /**
+   * Creates an instance of Memory.
+   *
+   * @param {number} rows, the number of rows of the game.
+   * @param {number} cols, the number of cols of the game.
+   * @param {String} playername, the name of the player.
+   *
+   * @memberof Memory
+   * @constructor
+   */
   constructor (rows = 2, cols = 2, playername = 'Noname') {
     super()
 
@@ -61,31 +85,27 @@ class Memory extends window.HTMLElement {
     this._div = document.importNode(this._templateDiv, false)
   }
 
+  /**
+   * A function which is called when the game object is placed on the global window.
+   *
+   * @memberof Memory
+   */
   connectedCallback () {
     this._setupNewGame(this._rows, this._cols)
     this._setupMemoryListeners()
 
-    // this._containerHeader.querySelector('.dropdown').addEventListener('click', event => {
-    //   this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
-    // })
-
-    // this._containerHeader.querySelector('.dropdown').addEventListener('click', this._dropDownClick.bind(this))
-
-    // this._containerHeader.querySelector('#dropdown-size').addEventListener('click', event => {
-    //  this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'inline-block'
-    //  this._containerHeader.addEventListener('click', this._dropDownClick.bind(this))
-    // })
     this._containerHeader.addEventListener('click', this._dropDownClick.bind(this))
     this._mainContainer.addEventListener('click', this._mainContainerClick.bind(this))
     this._mainContainer.addEventListener('windowRemoved', e => {
       this._userNameWindowOpen = false
     })
-
-    // this._restartButton.addEventListener('click', e => {
-    //   this._setupNewGame(this._rows, this._cols)
-    // })
   }
 
+  /**
+   * A function which is called when the main container is clicked.
+   *
+   * @memberof Memory
+   */
   _mainContainerClick (event) {
     switch (event.target) {
       case this._restartButton:
@@ -102,14 +122,12 @@ class Memory extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which is called when the dropdown menu is clicked.
+   *
+   * @memberof Memory
+   */
   _dropDownClick (event) {
-    // if (!this._mainDropDownActive) {
-    // this._mainDropDownActive = true
-    // this._containerHeader.querySelector('.dropdown-content').style.display = 'block'
-    // } else if (!this._sizeDropDownActive) {
-    // this._sizeDropDownActive = true
-    // this._containerHeader.querySelector('.dropdown-sub1-content').style.display = 'inline-block'
-    // } else {
     switch (event.target) {
       case this._containerHeader.querySelector('#configure'):
         if (!this._mainDropDownActive) {
@@ -169,6 +187,11 @@ class Memory extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which clears the highlight of the active dropdowns columns.
+   *
+   * @memberof Memory
+   */
   _clearActiveDropdownElements () {
     this._containerHeader.querySelector('#twox2').classList.remove('elementActive')
     this._containerHeader.querySelector('#twox4').classList.remove('elementActive')
@@ -176,6 +199,11 @@ class Memory extends window.HTMLElement {
     this._containerHeader.querySelector('#fourx4').classList.remove('elementActive')
   }
 
+  /**
+   * A function which closes the drop down menu.
+   *
+   * @memberof Memory
+   */
   _closeDropDown () {
     this._mainDropDownActive = false
     this._sizeDropDownActive = false
@@ -183,6 +211,11 @@ class Memory extends window.HTMLElement {
     this._containerHeader.querySelector('.dropdown-content').style.display = 'none'
   }
 
+  /**
+   * A function which sets up listeners for the memory game.
+   *
+   * @memberof Memory
+   */
   _setupMemoryListeners () {
     this._div.addEventListener('click', event => {
       event.preventDefault()
@@ -195,8 +228,12 @@ class Memory extends window.HTMLElement {
     })
   }
 
+  /**
+   * A function which starts a new memory game.
+   *
+   * @memberof Memory
+   */
   _setupNewGame (rows, cols) {
-    // this._clearAll()
     this._intervalID = null
     this._userNameWindowOpen = false
 
@@ -250,18 +287,37 @@ class Memory extends window.HTMLElement {
     this._firstStart = false
   }
 
+  /**
+   * A function which clears a given container from HTML-elements.
+   *
+   * @param {HTMLElement} container, the given container to clear.
+   *
+   * @memberof Memory
+   */
   _clearContainer (container) {
     while (container.firstChild) {
       container.removeChild(container.firstChild)
     }
   }
 
+  /**
+   * A function which clears all HTML-elements from the current shadowroot.
+   *
+   * @memberof Memory
+   */
   _clearAll () {
     while (this.shadowRoot.firstChild) {
       this.shadowRoot.removeChild(this.shadowRoot.firstChild)
     }
   }
 
+  /**
+   * A function which handles the logic of the turning of a given tile.
+   *
+   * @param {Tile} tile, the current Tile-object being turned.
+   *
+   * @memberof Memory
+   */
   turnBrick (tile) {
     if (this._firstClick) {
       this._startTimer()
@@ -321,6 +377,11 @@ class Memory extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which handles the logic and shows the highscore for the game.
+   *
+   * @memberof Memory
+   */
   _showHighScores () {
     // Clear the memoryContainer and populate with high-score-template
     this._clearContainer(this._container)
@@ -361,6 +422,15 @@ class Memory extends window.HTMLElement {
     this._container.appendChild(collection)
   }
 
+  /**
+   * A function which returns a shuffled picture array given the number of rows and columns.
+   *
+   * @param {number} rows, the number of rows.
+   * @param {number} cols, the number of columns.
+   * @return {[Tile]} an array containing shuffled tiles.
+   *
+   * @memberof Memory
+   */
   getPictureArray (rows, cols) {
     let arr = []
     for (let i = 1; i <= (rows * cols) / 2; i += 1) {
@@ -378,14 +448,33 @@ class Memory extends window.HTMLElement {
     return arr
   }
 
+  /**
+   * A function which returns the widht required for the memory game.
+   *
+   * @return {number} the width required in px.
+   *
+   * @memberof Memory
+   */
   getWidthRequired () {
     return (this._tileSize + this._spacer) * this._maxCols
   }
 
+  /**
+   * A function which returns the height required for the memory game.
+   *
+   * @return {number} the height required in px.
+   *
+   * @memberof Memory
+   */
   getHeightRequired () {
     return (this._tileSize + this._spacer) * this._maxRows + this._infoAreaSize
   }
 
+  /**
+   * A function which starts a timer for the current game of memory.
+   *
+   * @memberof Memory
+   */
   _startTimer () {
     // Clear previous intervalID and set time-limit for current interval
     clearInterval(this._intervalID)
@@ -396,27 +485,67 @@ class Memory extends window.HTMLElement {
     }, this._updateTime)
   }
 
+  /**
+   * A function which returns the header template for the memory window.
+   *
+   * @return {HTMLElement} the header template for the memory window.
+   *
+   * @memberof Memory
+   */
   getHeaderTemplate () {
     return this._headerTemplate
   }
 
+  /**
+   * A function which sets the header template for the memory window.
+   *
+   * @param {HTMLElement} header, the header template for the memory window.
+   *
+   * @memberof Memory
+   */
   setContainerHeader (header) {
     this._containerHeader = header
     this._containerHeader.appendChild(this._headerTemplate)
   }
+
+  /**
+   * A function which sets the icon URL for the memory window.
+   *
+   * @param {String} icon, the icon URL for the memory window.
+   *
+   * @memberof Memory
+   */
   setIcon (icon) {
     this._icon = icon
     this._containerHeader.querySelector('#iconImg').src = icon
   }
 
+  /**
+   * A function which sets that the memory window is focused.
+   *
+   * @memberof Memory
+   */
   setFocusedTrue () {
     this._isFocused = true
   }
 
+  /**
+   * A function which sets that the memory window is not focused.
+   *
+   * @memberof Memory
+   */
   setFocusedFalse () {
     this._isFocused = false
   }
 
+  /**
+   * A function which crops a given time value.
+   *
+   * @param {number} time, the value to crop.
+   * @param {number} decimals, the number of decimals to keep.
+   *
+   * @memberof Memory
+   */
   _cropTime (time, decimals) {
     return parseFloat(Math.round(time * 1000) / 1000).toFixed(decimals)
   }

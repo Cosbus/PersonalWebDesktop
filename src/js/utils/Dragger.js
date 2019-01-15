@@ -1,10 +1,37 @@
+/**
+ * Module for Dragger.
+ *
+ * @module src/js/utils/Dragger.js
+ * @author Claes Weyde
+ * @version 1.0.0
+ */
 
+/**
+ * A class which handles dragging of elements in an application.
+ *
+ * @class Dragger
+ */
 class Dragger {
+  /**
+   * Creates an instance of Dragger.
+   *
+   * @param {HTMLElement} container, the container in which the element is active.
+   * @param {WindowHandler} handler, a WindowHandler object which handles the elements within
+   *                                 the container.
+   *
+   * @memberof Dragger
+   * @constructor
+   */
   constructor (container, handler) {
     this._container = container
     this._windowHandler = handler
   }
 
+  /**
+   * A function which activates the listeners for the element.
+   *
+   * @memberof Dragger
+   */
   startListening () {
     this._container.addEventListener('mousedown', e => {
       // Make window appear in front
@@ -30,15 +57,18 @@ class Dragger {
       if (win !== (null || undefined)) {
         this._windowHandler.setActiveWindow(win)
         this.dragEnd(this._windowHandler.getActiveWindow(), e)
-        // for (let window of this._windows) { // Find the specific window
-        // if (e.target === window) {
-        // this._activeWindow = window
-        // this._dragger.dragEnd(this._activeWindow, e)
-        // this._dragEnd(this._activeWindow, e)
       }
     }, false)
   }
 
+  /**
+   * A function which starts the dragging action of the element.
+   *
+   * @param {HTMLElement} window, the window/element being dragged.
+   * @param {event} event, the event starting the dragging action.
+   *
+   * @memberof Dragger
+   */
   dragStart (window, event) {
     window.setInitialPointerPosX(event.clientX - window.getXPosOffset())
     window.setInitialPointerPosY(event.clientY - window.getYPosOffset())
@@ -48,6 +78,14 @@ class Dragger {
     }
   }
 
+  /**
+   * A function which performs the dragging action of the element.
+   *
+   * @param {HTMLElement} window, the window/element being dragged.
+   * @param {event} event, the event starting the dragging action.
+   *
+   * @memberof Dragger
+   */
   drag (window, event) {
     if (window.getDragActive()) {
       event.preventDefault()
@@ -62,6 +100,13 @@ class Dragger {
     }
   }
 
+  /**
+   * A function which ends the dragging action of the element.
+   *
+   * @param {HTMLElement} window, the window/element being dragged.
+   *
+   * @memberof Dragger
+   */
   dragEnd (window) {
     window.setInitialPointerPosX(window.getCurrentPointerPosX())
     window.setInitialPointerPosY(window.getCurrentPointerPosY())
@@ -69,6 +114,13 @@ class Dragger {
     window.setDragActive(false)
   }
 
+  /**
+   * A function setting the new position of the window/element being dragged.
+   *
+   * @param {HTMLElement} window, the window/element being dragged.
+   *
+   * @memberof Dragger
+   */
   _setNewElementPos (window) {
     window.setContainerStyleTransform('translate3d(' + window.getCurrentPointerPosX() + 'px, ' +
      window.getCurrentPointerPosY() + 'px, 0)')

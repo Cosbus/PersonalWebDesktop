@@ -1,10 +1,29 @@
+/**
+ * Module for MainWindow.
+ *
+ * @module src/js/pwindow/main-window.js
+ * @author Claes Weyde
+ * @version 1.0.0
+ */
 import Pwindow from './p-window.js'
 import SubWindow from './sub-window.js'
 import Dragger from '../utils/Dragger.js'
 import WindowHandler from '../utils/WindowHandler.js'
 
+/**
+ * A class which handles a HTML-window containing content.
+ *
+ * @class MainWindow
+ * @extends Pwindow
+ */
 class MainWindow extends Pwindow {
   constructor () {
+  /**
+   * Creates an instance of MainWindow.
+   *
+   * @memberof MainWindow
+   * @constructor
+   */
     super()
 
     // Variables for keeping track of the subWindows
@@ -43,6 +62,11 @@ class MainWindow extends Pwindow {
     this._dragger = new Dragger(this._container, this._windowHandler)
   }
 
+  /**
+   * A function which is called when the object is added to the global window.
+   *
+   * @memberof MainWindow
+   */
   connectedCallback () {
     this._container.addEventListener('click', e => {
       for (let application of this._applications) {
@@ -72,13 +96,8 @@ class MainWindow extends Pwindow {
 
     this._AppContainer.addEventListener('mouseover', e => {
       // Make sure element moves to front
-      // this._highestZindex++
       this._windowHandler.incrementZindex()
-      // this._windows.forEach(function (e) {
-      //  e.isNotFocused()
-      // })
       this._windowHandler.unfocusAllWindows()
-      // this._AppContainer.style.zIndex = this._highestZindex
       this._AppContainer.style.zIndex = this._windowHandler.getHighestZindex()
       this._applications.forEach((element) => {
         element.style.visibility = 'visible'
@@ -96,76 +115,14 @@ class MainWindow extends Pwindow {
       this._AppContainer.style.width = this._AppContIdleWidth
       this._AppContainer.style.height = this._AppContIdleHeight
     })
-
-    /*   this._container.addEventListener('mousedown', e => {
-      // Make window appear in front
-      this._highestZindex += 1
-      this._windows.forEach(function (e) {
-        e.isNotFocused()
-      })
-      for (let window of this._windows) {
-        if (e.target === window) {
-          this._activeWindow = window
-          this._activeWindow.setZIndex(this._highestZindex)
-          this._activeWindow.isFocused()
-          this._dragger.dragStart(this._activeWindow, e)
-          // this._dragStart(this._activeWindow, e)
-        }
-      }
-    }, false)
-
-    this._container.addEventListener('mousemove', e => {
-      this._dragger.drag(this._activeWindow, e)
-      // this._drag(this._activeWindow, e)
-    }, false)
-
-    this._container.addEventListener('mouseup', e => {
-      for (let window of this._windows) { // Find the specific window
-        if (e.target === window) {
-          this._activeWindow = window
-          this._dragger.dragEnd(this._activeWindow, e)
-          // this._dragEnd(this._activeWindow, e)
-        }
-      }
-    }, false)
   }
 
-  /* _dragStart (window, event) {
-    window.setInitialPointerPosX(event.clientX - window.getXPosOffset())
-    window.setInitialPointerPosY(event.clientY - window.getYPosOffset())
-
-    if (event.composedPath()[0] === window.getContainerHeader()) {
-      window.setDragActive(true)
-    }
-  }
-
-  _drag (window, event) {
-    if (window.getDragActive()) {
-      event.preventDefault()
-
-      window.setCurrentPointerPosX(event.clientX - window.getInitialPointerPosX())
-      window.setCurrentPointerPosY(event.clientY - window.getInitialPointerPosY())
-
-      window.setXPosOffset(window.getCurrentPointerPosX())
-      window.setYPosOffset(window.getCurrentPointerPosY())
-
-      this._setNewElementPos(window, event)
-    }
-  }
-
-  _dragEnd (window) {
-    window.setInitialPointerPosX(window.getCurrentPointerPosX())
-    window.setInitialPointerPosY(window.getCurrentPointerPosY())
-
-    window.setDragActive(false)
-  }
-
-  _setNewElementPos (window) {
-    window.setContainerStyleTransform('translate3d(' + window.getCurrentPointerPosX() + 'px, ' +
-     window.getCurrentPointerPosY() + 'px, 0)')
-  } */
-  }
-
+  /**
+   * A function which adds a given application to the window.
+   *
+   * @param {Application} application, instance of the Application object to be added
+   * @memberof MainWindow
+   */
   addApplication (application) {
     if (this._applications.length > 0) {
       application.setLeftPosition(`${parseInt(this._applications[this._applications.length - 1].getLeftPosition(), 10) +
@@ -176,41 +133,6 @@ class MainWindow extends Pwindow {
     this._applications.push(application)
     this._AppContainer.appendChild(application)
   }
-
-  /* addSubWindow (subWindow, width, height) {
-    if (this._windows.length === 0) {
-      subWindow.setLeftPosition(this._firstWindowStartingLeftPos)
-      subWindow.setTopPosition(this._firstWindowStartingTopPos)
-    } else {
-      let lastWindow = this._windows[this._windows.length - 1]
-      // Dont stack windows right on top of each other
-      subWindow.setLeftPosition(`${parseInt(lastWindow.getLeftPosition(), 10) +
-         this._nextWindowLeftOffset}`)
-      subWindow.setTopPosition(`${parseInt(lastWindow.getTopPosition(), 10) +
-        this._nextWindowTopOffset}`)
-    }
-    this._highestZindex += 1
-    subWindow.setZIndex(this._highestZindex)
-    subWindow.setWidth(`${width}px`)
-    subWindow.setHeight(`${height}px`)
-
-    if (!this._isInViewport(subWindow)) { // If the new window falls out of viewport
-      this._firstWindowStartingLeftPos += 10
-      subWindow.setLeftPosition(this._firstWindowStartingLeftPos)
-      subWindow.setTopPosition(this._firstWindowStartingTopPos)
-    }
-
-    this._windows.push(subWindow)
-
-    this._workSpace.appendChild(subWindow)
-  }
-
-  _isInViewport (elem) {
-    return ((parseInt(elem.getTopPosition(), 10) >= 0) &&
-    (parseInt(elem.getLeftPosition(), 10) >= 0) &&
-    ((parseInt(elem.getTopPosition(), 10) + parseInt(elem.getHeight(), 10)) <= window.innerHeight) &&
-    ((parseInt(elem.getLeftPosition(), 10) + parseInt(elem.getWidth(), 10)) <= window.innerWidth))
-  } */
 }
 
 export default MainWindow

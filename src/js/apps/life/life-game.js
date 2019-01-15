@@ -1,3 +1,11 @@
+/**
+ * Module for Life.
+ *
+ * @module src/js/apps/life/life-game.js
+ * @author Claes Weyde
+ * @version 1.0.0
+ */
+
 import cssTemplate from './css.js'
 import htmlTemplate from './html.js'
 import WindowHandler from '../../utils/WindowHandler.js'
@@ -6,7 +14,19 @@ import InputView from '../../utils/inputView/input-view.js'
 import SubWindow from '../../pwindow/sub-window.js'
 import InfoView from '../../utils/infoView/info-view.js'
 
+/**
+ * A class which handles a life game.
+ *
+ * @class Life
+ * @extends window.HTMLElement
+ **/
 class LifeGame extends window.HTMLElement {
+  /**
+   * Creates an instance of Life.
+   *
+   * @memberof Life
+   * @constructor
+   */
   constructor () {
     super()
 
@@ -30,8 +50,6 @@ class LifeGame extends window.HTMLElement {
     this._lastYPos = 0
     this._ctx = this._canvas.getContext('2d')
     this._ctx.strokeStyle = 'black'
-
-    // this._saveFileName = 'image.png'
 
     this._isFocused = true
 
@@ -58,6 +76,11 @@ class LifeGame extends window.HTMLElement {
       .content.cloneNode(true)
   }
 
+  /**
+   * A function which is called when the game object is placed on the global window.
+   *
+   * @memberof Life
+   */
   connectedCallback () {
     this._createArray(this._arr)
     this._createArray(this._nextArr)
@@ -118,11 +141,21 @@ class LifeGame extends window.HTMLElement {
     this._sendImageEvent = new window.CustomEvent('sentimage', { detail: this._snapShotURL })
   }
 
+  /**
+   * A function which closes the dropdown menu.
+   *
+   * @memberof Life
+   */
   _closeDropDown () {
     this._mainDropDownActive = false
     this._containerHeader.querySelector('.dropdown-content').style.display = 'none'
   }
 
+  /**
+   * A function which opens a window containing information regarding the Life Game.
+   *
+   * @memberof Life
+   */
   _openAboutWindow () {
     let aboutView = new InfoView('About "Conways game of life"', '"Conways game of life" is a game which is fully determined' +
     ' by the initial state of the game. Originally devised by the British mathematician John Horton' +
@@ -144,6 +177,13 @@ class LifeGame extends window.HTMLElement {
     })
   }
 
+  /**
+   * A function which handles the starting action of drawing on the canvas.
+   *
+   * @param {event} event, the event starting the drawing on the canvas
+   *
+   * @memberof Life
+   */
   _startDraw (event) {
     this._closeDropDown()
     this._mousePressed = true
@@ -152,6 +192,13 @@ class LifeGame extends window.HTMLElement {
       event.pageY - this._canvas.getBoundingClientRect().y, false)
   }
 
+  /**
+   * A function which handles the drawing action on the canvas.
+   *
+   * @param {event} event, the event of drawing on the canvas
+   *
+   * @memberof Life
+   */
   _performDraw (event) {
     if (this._mousePressed) {
       this._draw(event.pageX - this._canvas.getBoundingClientRect().x,
@@ -159,10 +206,26 @@ class LifeGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which handles the action of ending the drawing on the canvas.
+   *
+   * @param {event} event, the event which ends the drawing on the canvas
+   *
+   * @memberof Life
+   */
   _endDraw (event) {
     this._mousePressed = false
   }
 
+  /**
+   * A function which draws on the canvas.
+   *
+   * @param {number} xPos, the x-position of the pointer.
+   * @param {number} yPos, the y-position of the pointer.
+   * @param {boolean} isMoved, a parameter keeping track of if the pointer is moved.
+   *
+   * @memberof Life
+   */
   _draw (xPos, yPos, isMoved) {
     if (isMoved) {
       this._initParams()
@@ -175,11 +238,21 @@ class LifeGame extends window.HTMLElement {
     this._lastYPos = yPos
   }
 
+  /**
+   * A function which clears the canvas
+   *
+   * @memberof Life
+   */
   _clearCanvas () {
     this._ctx.setTransform(1, 0, 0, 1, 0, 0)
     this._ctx.clearRect(0, 0, this._ctx.canvas.width, this._ctx.canvas.height)
   }
 
+  /**
+   * A function which handles the drawing of a selected shape on the canvas.
+   *
+   * @memberof Life
+   */
   _drawShape () {
     let selection = this.shadowRoot.querySelector('#selShape')
     this._initParams()
@@ -202,30 +275,47 @@ class LifeGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which draws a rectangle on the canvas.
+   *
+   * @memberof Life
+   */
   _drawRectangle () {
     this._ctx.rect(this._canvas.clientWidth / 4, this._canvas.clientHeight / 4, this._canvas.clientWidth / 2, this._canvas.clientHeight / 2)
     this._ctx.closePath()
     this._ctx.stroke()
   }
 
+  /**
+   * A function which draws a circle on the canvas.
+   *
+   * @memberof Life
+   */
   _drawCircle () {
     this._ctx.arc(this._canvas.clientWidth / 2, this._canvas.clientHeight / 2, this._canvas.clientHeight / 4, 0, 2 * Math.PI)
     this._ctx.closePath()
     this._ctx.stroke()
   }
 
+  /**
+   * A function which draws a triangle on the canvas.
+   *
+   * @memberof Life
+   */
   _drawTriangle () {
     this._ctx.moveTo(this._canvas.clientWidth / 4, this._canvas.clientHeight / 4)
     this._ctx.lineTo(this._canvas.clientWidth / 4, this._canvas.clientHeight * (3 / 4))
     this._ctx.lineTo(this._canvas.clientWidth * (3 / 4), this._canvas.clientHeight * (3 / 4))
 
-    // this._ctx.moveTo(100, 100)
-    // this._ctx.lineTo(100, 300)
-    // this._ctx.lineTo(300, 300)
     this._ctx.closePath()
     this._ctx.stroke()
   }
 
+  /**
+   * A function which draws a random on the canvas.
+   *
+   * @memberof Life
+   */
   _randomPattern () {
     for (let j = 0; j < this._height; j++) {
       for (let k = 0; k < this._width; k++) {
@@ -234,6 +324,11 @@ class LifeGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which draws a pattern on the canvas based on a two-dimensional grid.
+   *
+   * @memberof Life
+   */
   _drawPatternOnCanvas () {
     for (let j = 1; j < this._height; j++) {
       for (let k = 1; k < this._width; k++) {
@@ -245,6 +340,11 @@ class LifeGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which scans the canvas and places the pattern in a two-dimensional grid.
+   *
+   * @memberof Life
+   */
   _getPatternFromCanvas () {
     let currentCanvasImage = this._ctx.getImageData(0, 0, this._width, this._height)
     let j = 0
@@ -266,6 +366,11 @@ class LifeGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which steps forward one step in the game of life.
+   *
+   * @memberof Life
+   */
   _stepForward () {
     this._getPatternFromCanvas()
     this._updateArray()
@@ -275,6 +380,11 @@ class LifeGame extends window.HTMLElement {
     this._noIterations++
   }
 
+  /**
+   * A function which initializes the parameters for the canvas.
+   *
+   * @memberof Life
+   */
   _initParams () {
     this._ctx.beginPath()
     let selectors = this.shadowRoot.querySelector('#selWidth')
@@ -282,20 +392,47 @@ class LifeGame extends window.HTMLElement {
     this._ctx.lineJoin = 'round'
   }
 
+  /**
+   * A function which returns the width required for the Life window.
+   *
+   * @return {number} the width required in px.
+   *
+   * @memberof Life
+   */
   getWidthRequired () {
     return this._width
   }
 
+  /**
+   * A function which returns the height required for the Life window.
+   *
+   * @return {number} the height required in px.
+   *
+   * @memberof Life
+   */
   getHeightRequired () {
     return (this._height + this._configAreaSize)
   }
 
+  /**
+   * A function which creates a two-dimensional array to be used for the game of life.
+   *
+   * @param {[number]} arr, the array to be filled with arrays.
+   *
+   * @memberof Life
+   */
   _createArray (arr) {
     for (let i = 0; i < this._height; i++) {
       arr[i] = []
     }
   }
 
+  /**
+   * A function which updates the array containing the information of the current step in
+   * the game of life.
+   *
+   * @memberof Life
+   */
   _updateArray () {
     let totalCells
     for (let i = 1; i < this._height - 1; i++) {
@@ -343,6 +480,11 @@ class LifeGame extends window.HTMLElement {
     }
   }
 
+  /**
+   * A function which runs the game of life by stepping forward continually.
+   *
+   * @memberof Life
+   */
   _runLife () {
     // Reset interval
     clearInterval(this._intervalID)
@@ -352,16 +494,36 @@ class LifeGame extends window.HTMLElement {
     }, this._updateTime)
   }
 
+  /**
+   * A function which sets the container header of the Life window.
+   *
+   * @param {HTMLElement} header, the container header of the Life window.
+   *
+   * @memberof Life
+   */
   setContainerHeader (header) {
     this._containerHeader = header
     this._containerHeader.appendChild(this._headerTemplate)
   }
 
+  /**
+   * A function which sets the icon image URL of the Life window.
+   *
+   * @param {String} icon, the icon image URL of the Life window.
+   *
+   * @memberof Life
+   */
   setIcon (icon) {
     this._icon = icon
     this._containerHeader.querySelector('#iconImg').src = icon
   }
 
+  /**
+   * A function which takes a snapshot of the current canvas view of the game of Life and
+   * saves it in a file specified by the user.
+   *
+   * @memberof Life
+   */
   _thisTakeSnapShot () {
     this._getPatternFromCanvas()
     this._snapShotURL = this._canvas.toDataURL('img/png')
@@ -390,18 +552,42 @@ class LifeGame extends window.HTMLElement {
     this.dispatchEvent(this._sendImageEvent)
   }
 
+  /**
+   * A function which returns the current snapshot of the Life canvas.
+   *
+   * @return {URL} the URL of the current snapshot of the Life canvas.
+   *
+   * @memberof Life
+   */
   getSnapShot () {
     return this._snapShotURL
   }
 
+  /**
+   * A function which sets the current snapshot of the Life canvas.
+   *
+   * @param {URL} snapShot, the URL of the current snapshot of the Life canvas.
+   *
+   * @memberof Life
+   */
   setSnapShot (snapShot) {
     this._snapShotURL = snapShot
   }
 
+  /**
+   * A function which sets the focus of the Life window to true.
+   *
+   * @memberof Life
+   */
   setFocusedTrue () {
     this._isFocused = true
   }
 
+  /**
+   * A function which sets the focus of the Life window to false.
+   *
+   * @memberof Life
+   */
   setFocusedFalse () {
     this._isFocused = false
   }

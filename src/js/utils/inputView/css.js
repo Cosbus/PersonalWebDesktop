@@ -13,7 +13,6 @@ cssTemplate.innerHTML = /* html */ `
   }
 
   #container{
-    border: solid green;
     height: 100%;
     display: flex;
     flex-direction:column;
