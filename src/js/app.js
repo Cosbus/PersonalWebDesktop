@@ -1,3 +1,13 @@
+/**
+ * Module for app.
+ *
+ * The starting point of the application
+ *
+ * @module src/app.js
+ * @author Claes Weyde
+ * @version 1.0.0
+ */
+
 import Pwindow from './pwindow/p-window.js'
 import MainWindow from './pwindow/main-window.js'
 import SubWindow from './pwindow/sub-window.js'
